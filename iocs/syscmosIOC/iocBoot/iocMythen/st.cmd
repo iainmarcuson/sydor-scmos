@@ -7,7 +7,7 @@ epicsEnvSet EPICS_CA_MAX_ARRAY_BYTES 32000000
 
 dbLoadDatabase("$(TOP)/dbd/syscmosApp.dbd")
 
-gencamApp_registerRecordDeviceDriver(pdbbase)
+syscmosApp_registerRecordDeviceDriver(pdbbase)
 
 #drvAsynIPPortConfigure("portName","hostInfo",priority,noAutoConnect,
 #                        noProcessEos)
@@ -46,7 +46,7 @@ epicsEnvSet("XSIZE",  "1280")
 epicsEnvSet("YSIZE",  "1")
 epicsEnvSet("NCHANS", "1280")
 epicsEnvSet("CBUFFS", "100")
-epicsEnvSet("EPICS_DB_INCLUDE_PATH","$(ADCORE)/db:$(ADSYSCMOS)/db")
+epicsEnvSet("EPICS_DB_INCLUDE_PATH","$(ADCORE)/db:$(SYSCMOS)/db")
 
 # mythenConfig (
 #               portName,       # The name of the asyn port driver to be created.
@@ -55,12 +55,12 @@ epicsEnvSet("EPICS_DB_INCLUDE_PATH","$(ADCORE)/db:$(ADSYSCMOS)/db")
 #                                 allowed to allocate. Set this to -1 to allow an unlimited number of buffers.
 #               maxMemory)      # The maximum amount of memory that the NDArrayPool for this driver is 
 #                                 allowed to allocate. Set this to -1 to allow an unlimited amount of memory.
-gencamConfig("SD1", "IP_Ctrl", "IP_Data", "$(PREFIX)", "cam1:", -1,-1)
+syscmosConfig("SD1", "IP_Ctrl", "IP_Data", "$(PREFIX)", "cam1:", -1,-1)
 
 #asynSetTraceMask("IP_M1K",0,1)
 #YF Try
 #dbLoadRecords("$(ADGENCAM)/gencamApp/Db/ADBase.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
-dbLoadRecords("$(SYSCMOS)/gencamApp/Db/gencam.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(SYSCMOS)/syscmosApp/Db/syscmos.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
 
 
 # Create a standard arrays plugin
@@ -73,7 +73,7 @@ dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=I
 # Load asynRecord records on Mythen communication
 dbLoadRecords("$(ASYN)/db/asynRecord.db", "P=$(PREFIX),R=asyn_1,PORT=IP_M1K,ADDR=0,OMAX=256,IMAX=256")
 
-set_requestfile_path("$(TOP)/gencamApp/Db")
+set_requestfile_path("$(TOP)/syscmosApp/Db")
 
 iocInit()
 
