@@ -1,0 +1,8 @@
+#!/bin/bash
+if [[ $1 == "debug" ]] 
+then
+   gdb --args ../../bin/linux-x86_64/gencamApp st.cmd
+else
+   ../../bin/linux-x86_64/gencamApp st.cmd
+fi
+

@@ -1,0 +1,120 @@
+#ifndef cpv_interface_ioc_H
+#define cpv_interface_ioc_H
+
+#include "sydor_scmos_params.h"
+
+#include "ADDriver.h"
+
+#include <stdio.h>
+#include <string.h>
+
+#include <asynOctetSyncIO.h>
+
+#define kSTR_SETPV "setpv"
+#define kSTR_ASYNC "async"
+#define kSTR_GETPV "getpv"
+
+#define kSTR_DOUBLE "d"
+#define kSTR_INT32 "i32"
+#define kSTR_STRING "s"
+
+#include <unordered_map>
+
+enum SD_Param_Type
+  {
+   SD_INT32,
+   SD_DOUBLE,
+   SD_STRING
+  };
+
+
+class syscmos; // fwd proto
+
+class CPV_Interface_IOC
+{
+	// constructor
+public:
+
+    struct _structPR
+    {
+        int nType; // 1 = Int32, 2 = Float64, 3 = string
+        epicsInt32 ival;
+        epicsFloat64 fval;
+        char *sval;
+    };
+
+    typedef struct _structPR PRType;
+	const char kSPECIALCHAR_FLAG = '@';
+  const char kGETCHAR_FLAG = '$';
+	static const int kSizeOfPrivateBuffer = 1024;
+
+
+public:
+	//
+	//  Create a table (HASH) aka Dictionary of 
+	//    Key=PVName, Value = DataViewer Epics Plugin String
+	//
+	std::unordered_map<std::string, std::string> pv_dv_cmds = {
+        {ADAcquireTimeString,"IntegTime"},		 // PV: AcquireTime
+		{SDInterframeTimeString, "InterTime"},	 // PV:InterframeTime 
+        {SDNumFramesString,"FramesPerTrigger"},  // PV: NumFrames
+        {ADTriggerModeString,"Trigger"},		 // PV:TriggerMode
+		{ADNumImagesString,"NTriggers"},	     // PV:NumImages
+		//[0]
+		// Special SetName, SetDescription, and RunName must all be set
+		// and then StartRun is selected. 
+		// {SDSetNameString, "SetName"},			 // NYI
+		//{SDSetDescriptionString, "SetDescription"},  // NYI
+		//{SDRunNameString, "RunName"},			 // NYI
+		//{SDStartRunString, "actionRun {setName:$1,description:$2,runName:$3}"
+		{SDStartRunString, "@SPECIAL_START_RUN"},
+	{SDSelectRunString, "@SPECIAL_SELECT_RUN"},
+
+		//[0]
+
+		{SDDoTriggerString, "actionTrigger"},	 // NYT
+		{ADShutterControlString, "Shutter"},	 	 // NYT
+		{SDSensorPowerString, "SensorPower"},	 // NYT
+	{SDLinkStatusString, "Connected"},
+	{SDOutMuxString, "$OutMux"},
+	{SDRunStartString, "actionStartRun"},
+	
+    };
+
+
+	CPV_Interface_IOC(syscmos *psyscmos); 
+	
+	int Init( asynOctetSyncIO *pasynOctetSyncIO, asynUser *pasynUserMeter );
+	
+	int SetPV(const char * pvName, epicsInt32 val);
+	int SetPV(const char * pvName, epicsFloat64 val);
+	int SetPV(const char * pvName, const char *pval);
+  int GetPV(const char *cmdName, int paramNum);
+	int ParseResponse(const char *strResponse, int *nFunction, PRType *prt);
+
+public:
+	epicsEventId cmdEventId;
+
+protected:
+	asynStatus writeWithReply(char *pstr);
+	bool _FindMatchingPV( const char *pvName, char *cmdName);
+	bool _HandleSpecialCommands(const char *cmdName);
+  bool _FindMatchingCmd(const char *cmdName, char *pvName);
+protected:
+	asynOctetSyncIO *m_pasynOctetSyncIO = NULL;	
+	asynUser        *m_pasynUserMeter = NULL;
+	syscmos          *m_syscmos=NULL;
+	uint32_t      m_sendCommandCounter = 0;
+	char m_privateBuffer[kSizeOfPrivateBuffer]; // outgoing buffer
+	//char m_outBuffer[128]; // outgoing buffer
+	char m_inBuffer[128]; // incoming buffer
+	
+	
+
+
+};	
+
+
+
+#endif
+

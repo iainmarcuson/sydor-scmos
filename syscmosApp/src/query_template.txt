@@ -1,0 +1,8 @@
+$(P)$(R)AcquireTime, ADAcquireTime, d
+$(P)$(R)TriggerMode, ADTriggerMode, i32
+$(P)$(R)NumImages, ADNumImages, i32
+$(P)$(R)ShutterControl, ADShutterControl, i32
+$(P)$(R)InterframeTime, SDInterframeTime, d
+$(P)$(R)NumFrames, SDNumFrames, i32
+$(P)$(R)SensorPower, SDSensorPower, i32
+$(P)$(R)LinkStatus, SDLinkStatus, i32
