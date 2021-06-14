@@ -8,3 +8,5 @@ $(P)$(R)SensorPower, SDSensorPower, i32
 $(P)$(R)LinkStatus, SDLinkStatus, i32
 $(P)$(R)ReverseX, ADReverseX, i32
 $(P)$(R)ReverseY, ADReverseY, i32
+$(P)$(R)DSNU, SDDSNUMode, i32
+$(P)$(R)PRNU, SDPRNUMode, i32

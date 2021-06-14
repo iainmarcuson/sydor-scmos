@@ -152,6 +152,9 @@ public:
   int SDLinkStatus;
   int SDEPICSLinkStatus;
 
+  int SDDSNUMode;
+  int SDPRNUMode;
+  
   int SDRunStart;
   int SDSelectRun;
   int SDLoadNumFrames;

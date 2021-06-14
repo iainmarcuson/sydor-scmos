@@ -80,6 +80,8 @@ public:
 	{SDRunStartString, "actionStartRun"},
 	{ADReverseXString, "HFlip"},
 	{ADReverseYString, "VFlip"},
+	{SDDSNUString, "DSNU"},
+	{SDPRNUString, "PRNU"},
     };
 
 

@@ -1862,6 +1862,9 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
   createParam(SDEPICSLinkStatusString, asynParamInt32, &SDEPICSLinkStatus);
 
+  createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
+  createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
+  
   createParam(SDRunStartString, asynParamInt32, &SDRunStart);
   createParam(SDSelectRunString, asynParamInt32, &SDSelectRun);
   createParam(SDLoadNumFramesString, asynParamInt32, &SDLoadNumFrames);

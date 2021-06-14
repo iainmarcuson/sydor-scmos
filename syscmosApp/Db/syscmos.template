@@ -717,3 +717,49 @@ record(mbbo, "$(P)$(R)ImageMode")
    field(VAL,  "")
    info(autosaveFields, "VAL")
 }
+
+#----------------------------
+# sCMOS Options
+#----------------------------
+
+record (bo, "$(P)$(R)DSNU")
+{
+field(DESC, "Enable DSNU")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_DSNU")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)DSNU_RBV")
+{
+field(DESC, "Enable DSNU")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_DSNU")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+field(SCAN, "I/O Intr")
+}
+
+record (bo, "$(P)$(R)PRNU")
+{
+field(DESC, "Enable PRNU")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_PRNU")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)PRNU_RBV")
+{
+field(DESC, "Enable DSNU")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_PRNU")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+field(SCAN, "I/O Intr")
+}

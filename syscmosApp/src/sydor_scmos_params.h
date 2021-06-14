@@ -28,6 +28,9 @@
 #define SDReadModeString        "SD_READ_MODE"
 #define SDDoTriggerString       "SD_DO_TRIGGER"
 
+#define SDDSNUString            "SD_DSNU"
+#define SDPRNUString            "SD_PRNU"
+
 #define SDLinkStatusString      "SD_LINK_STATUS"
 #define SDEPICSLinkStatusString "SD_EPICS_STATUS"
 
