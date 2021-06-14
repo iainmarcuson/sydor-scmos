@@ -6,3 +6,5 @@ $(P)$(R)InterframeTime, SDInterframeTime, d
 $(P)$(R)NumFrames, SDNumFrames, i32
 $(P)$(R)SensorPower, SDSensorPower, i32
 $(P)$(R)LinkStatus, SDLinkStatus, i32
+$(P)$(R)ReverseX, ADReverseX, i32
+$(P)$(R)ReverseY, ADReverseY, i32

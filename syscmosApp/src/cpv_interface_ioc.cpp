@@ -277,8 +277,9 @@ int CPV_Interface_IOC::SetPV(const char *pvName, epicsInt32 val)
         //
         // SEND Request to change
         //
+      /// TODO Perhaps look up data type?  May not be necessary for a set
         snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-        "#%d:setpv<s>:%s:%d\r\n", m_sendCommandCounter++, s_cmdName, val);
+        "#%d:setpv<i32>:%s:%d\r\n", m_sendCommandCounter++, s_cmdName, val);
     }
     return writeWithReply(m_privateBuffer); 
 

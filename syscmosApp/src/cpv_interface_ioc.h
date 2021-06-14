@@ -57,9 +57,9 @@ public:
 	std::unordered_map<std::string, std::string> pv_dv_cmds = {
         {ADAcquireTimeString,"IntegTime"},		 // PV: AcquireTime
 		{SDInterframeTimeString, "InterTime"},	 // PV:InterframeTime 
-        {SDNumFramesString,"FramesPerTrigger"},  // PV: NumFrames
+        {SDNumFramesString,"NFrames"},  // PV: NumFrames
         {ADTriggerModeString,"Trigger"},		 // PV:TriggerMode
-		{ADNumImagesString,"NTriggers"},	     // PV:NumImages
+		{ADNumImagesString,"NImages"},	     // PV:NumImages
 		//[0]
 		// Special SetName, SetDescription, and RunName must all be set
 		// and then StartRun is selected. 
@@ -78,7 +78,8 @@ public:
 	{SDLinkStatusString, "Connected"},
 	{SDOutMuxString, "$OutMux"},
 	{SDRunStartString, "actionStartRun"},
-	
+	{ADReverseXString, "HFlip"},
+	{ADReverseYString, "VFlip"},
     };
 
 
