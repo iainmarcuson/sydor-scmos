@@ -65,7 +65,7 @@ dbLoadRecords("$(SYSCMOS)/syscmosApp/Db/syscmos.template", "P=$(PREFIX),R=cam1:,
 
 # Create a standard arrays plugin
 NDStdArraysConfigure("Image1", 3, 0, "$(PORT)", 0, 0)
-dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=1048576")
+dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=4194304")
 
 # Load all other plugins using commonPlugins.cmd
 #///< $(ADCORE)/iocBoot/commonPlugins.cmd

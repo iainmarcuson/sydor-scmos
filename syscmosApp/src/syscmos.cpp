@@ -1897,7 +1897,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   //status |= setStringParam (SDFirmwareVersion, firmwareVersion_);
 
   int sensorSizeX = MAX_DIMS;
-  int sensorSizeY = 1280; ///FIXME Unhardcode
+  int sensorSizeY = MAX_DIMS; ///FIXME Unhardcode
   status |= setIntegerParam(ADMaxSizeX, sensorSizeX);
   status |= setIntegerParam(ADMaxSizeY, sensorSizeY);
 
@@ -1905,7 +1905,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   minX = 1;
   minY = 1;
   sizeX = MAX_DIMS;
-  sizeY = 1280;
+  sizeY = MAX_DIMS;
   status |= setIntegerParam(ADMinX, minX);
   status |= setIntegerParam(ADMinY, minY);
   status |= setIntegerParam(ADSizeX, sizeX);

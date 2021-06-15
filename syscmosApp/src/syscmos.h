@@ -4,7 +4,7 @@
 #include "cpv_interface_ioc.h"
 
 #define MAX_FILENAME_LEN 256
-#define MAX_DIMS      1280
+#define MAX_DIMS      2048
 #define MAX_COMMAND_LEN 128
 #define MAX_NMODULES 2
 #define M1K_TIMEOUT 5.0
