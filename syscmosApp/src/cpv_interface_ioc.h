@@ -67,7 +67,7 @@ public:
 		//{SDSetDescriptionString, "SetDescription"},  // NYI
 		//{SDRunNameString, "RunName"},			 // NYI
 		//{SDStartRunString, "actionRun {setName:$1,description:$2,runName:$3}"
-		{SDStartRunString, "@SPECIAL_START_RUN"},
+		{SDStartRunString, "actionCapture"},
 	{SDSelectRunString, "@SPECIAL_SELECT_RUN"},
 
 		//[0]
