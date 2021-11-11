@@ -8,12 +8,13 @@ if len(sys.argv) != 2:
 template_filename = sys.argv[1]
 query_db_filename = "gc_query.db"; # GenCam query database
 param_db_filename = "gc_params.db"; # GenCam parameter database
-
+query_hdr_filename = "gc_query.h";
 query_suffix = "_Q"
 
 template_file = open(template_filename, "r");
 query_db_file = open(query_db_filename, "w");
 param_db_file = open(param_db_filename, "w");
+query_hdr_file = open(query_hdr_filename, "w");
 
 for curr_line in template_file:
     if ('#' in curr_line) and not curr_line.startswith('#'):
@@ -29,15 +30,15 @@ for curr_line in template_file:
     print("Processing line: {}".format(curr_line.strip()));
 
     # Extract all the parameters from the line.  Also create derived parameters
-    base_pv_name = curr_line.split(',')[0].strip();
+    base_pv_name = curr_line.split(',')[0].strip();  # Name of the setter PV
     querier_pv_name = base_pv_name + query_suffix;
     asyn_name = curr_line.split(',')[1].strip();
-    asyn_query_name = asyn_name + query_suffix;
+    asyn_query_name = asyn_name + query_suffix; # Name of asyn string for queries
     pv_type = curr_line.split(',')[2].strip();
-    param_var_name = curr_line.split(',')[3].strip();
-    param_query_var_name = param_var_name + query_suffix;
-    param_var_str_name = curr_line.split(',')[4].strip();
-    param_query_str_name = param_var_str_name + query_suffix;
+    param_var_name = curr_line.split(',')[3].strip(); # Variable name of the parameter variable used in setParam
+    param_query_var_name = param_var_name + query_suffix; # Variable name of the querier variable used in setParam
+    param_var_str_name = curr_line.split(',')[4].strip(); # Name of the string constant used with createParam
+    param_query_str_name = param_var_str_name + query_suffix; # Name of the querier's string constant used with createParam
     var_pre_exist = int(curr_line.split(',')[5].strip());
     pv_inhibit = int(curr_line.split(',')[6].strip());
     
@@ -98,10 +99,15 @@ for curr_line in template_file:
             out_line = '}\n\n';
             param_db_file.write(out_line);
                 
-            
+    # Generate the query header file information
+    hdr_query_line = '#define {} "{}"\n'.format(param_query_str_name, asyn_query_name);
+    query_hdr_file.write(hdr_query_line);
 
+query_hdr_file.write('\n');
 template_file.close();
 query_db_file.close();
+param_db_file.close();
+query_hdr_file.close();
 
 sys.exit(0);
 
