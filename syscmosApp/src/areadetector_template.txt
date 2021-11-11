@@ -13,4 +13,4 @@ $(P)$(R)LinkStatus, SD_LINK_STATUS, i32, SDLinkStatus, SDLinkStatusString, 0, 0
 $(P)$(R)ReverseX, REVERSE_X, i32, ADReverseX, ADReverseXString, 0, 0
 $(P)$(R)ReverseY, REVERSE_Y, i32, ADReverseY, ADReverseYString, 0, 0
 $(P)$(R)DSNU, SD_DSNU, i32, SDDSNUMode, SDDSNUString, 0, 0
-$(P)$(R)PRNU, SD_PRNUm i32, SDPRNUMode, STPRNUString, 0, 0
+$(P)$(R)PRNU, SD_PRNU, i32, SDPRNUMode, STPRNUString, 0, 0

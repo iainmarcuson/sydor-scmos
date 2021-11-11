@@ -14,11 +14,17 @@ template_file = open(template_filename, "r");
 query_db_file = open(query_db_filename, "w");
 
 for curr_line in template_file:
-    if curr_line.contains('#') and not curr_line.startswith('#'):
+    if ('#' in curr_line) and not curr_line.startswith('#'):
         print("Comments must take a full line.  # must be the first character in the line.");
         sys.exit(1);
 
-    print("Processing line: {}".format(curr_line));
+    if '#' in curr_line:
+        continue;               # Skip comments
+
+    if curr_line.strip() == '':
+        continue;               # Skip blank lines
+    
+    print("Processing line: {}".format(curr_line.strip()));
 
     # Extract all the parameters from the line.  Also create derived parameters
     base_pv_name = curr_line.split(',')[0].strip();
