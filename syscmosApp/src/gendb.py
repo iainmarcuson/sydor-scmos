@@ -8,13 +8,16 @@ if len(sys.argv) != 2:
 template_filename = sys.argv[1]
 query_db_filename = "gc_query.db"; # GenCam query database
 param_db_filename = "gc_params.db"; # GenCam parameter database
-query_hdr_filename = "gc_query.h";
+query_hdr_filename = "gc_query.h"; # GenCam query header file
+param_str_hdr_filename = "gc_params.h"; # GenCam parameter string header file
+
 query_suffix = "_Q"
 
 template_file = open(template_filename, "r");
 query_db_file = open(query_db_filename, "w");
 param_db_file = open(param_db_filename, "w");
 query_hdr_file = open(query_hdr_filename, "w");
+param_str_hdr_file = open(param_str_hdr_filename, "w");
 
 for curr_line in template_file:
     if ('#' in curr_line) and not curr_line.startswith('#'):
@@ -103,7 +106,13 @@ for curr_line in template_file:
     hdr_query_line = '#define {} "{}"\n'.format(param_query_str_name, asyn_query_name);
     query_hdr_file.write(hdr_query_line);
 
+    # Generate the parameter header file
+    if var_pre_exist == 0:
+        param_str_line = '#define {} "{}"\n'.format(param_var_str_name, asyn_name);
+        param_str_hdr_file.write(param_str_line);
+
 query_hdr_file.write('\n');
+param_str_hdr_file.write('\n');
 template_file.close();
 query_db_file.close();
 param_db_file.close();
