@@ -1,6 +1,8 @@
 #ifndef SYDOR_SCMOS_PARAMS_H
 #define SYDOR_SCMOS_PARAMS_H
 
+#include "gc_params.h"
+#include "gc_query.h"
 
 #define SDSettingString         "SD_SETTING"
 #define SDDelayTimeString       "SD_DELAY_TIME"

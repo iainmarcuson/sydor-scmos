@@ -10,6 +10,8 @@ query_db_filename = "gc_query.db"; # GenCam query database
 param_db_filename = "gc_params.db"; # GenCam parameter database
 query_hdr_filename = "gc_query.h"; # GenCam query header file
 param_str_hdr_filename = "gc_params.h"; # GenCam parameter string header file
+param_var_filename = "gc_class_params.h"; # GenCam parameter declaration file
+create_param_filename = "gc_create.c";  # GenCam parameter creation file
 
 query_suffix = "_Q"
 
@@ -18,6 +20,8 @@ query_db_file = open(query_db_filename, "w");
 param_db_file = open(param_db_filename, "w");
 query_hdr_file = open(query_hdr_filename, "w");
 param_str_hdr_file = open(param_str_hdr_filename, "w");
+param_var_file = open(param_var_filename, "w");
+create_param_file = open(create_param_filename, "w");
 
 for curr_line in template_file:
     if ('#' in curr_line) and not curr_line.startswith('#'):
@@ -107,16 +111,40 @@ for curr_line in template_file:
     query_hdr_file.write(hdr_query_line);
 
     # Generate the parameter header file
-    if var_pre_exist == 0:
+    if var_pre_exist == 0:      # Don't create if already defined
         param_str_line = '#define {} "{}"\n'.format(param_var_str_name, asyn_name);
         param_str_hdr_file.write(param_str_line);
 
+    # Generate the variable entries
+    if var_pre_exist == 0:      # Don't create if already defined
+        param_var_line = 'int {};\n'.format(param_var_name);
+        param_var_file.write(param_var_line);
+
+    # Create the AD Parameters
+    ad_param_type = "";        # Initialize variable
+    if pv_type == 'd':      # A double parameter
+        ad_param_type = "asynParamFloat64";
+    elif pv_type == 'i32':  # An integer param
+        ad_param_type = "asynParamInt32";
+    else:                   # TODO Add string types
+        print("Bad state in creating AD parameters.");
+        sys.exit(1);
+
+    if var_pre_exist == 0:      # Only create variable param if new
+        create_param_line = 'createParam({}, {}, &{});\n'.format(param_var_str_name, ad_param_type, param_var_name);
+        create_param_file.write(create_param_line);
+    create_query_param_line = 'createParam({}, asynParamInt32, &{});\n\n'.format(param_query_str_name, param_query_var_name);
+    create_param_file.write(create_query_param_line);
+            
 query_hdr_file.write('\n');
 param_str_hdr_file.write('\n');
+param_var_file.write('\n');
 template_file.close();
 query_db_file.close();
 param_db_file.close();
 query_hdr_file.close();
+param_var_file.close();
+create_param_file.close();
 
 sys.exit(0);
 
