@@ -48,6 +48,7 @@ for curr_line in template_file:
     param_query_str_name = param_var_str_name + query_suffix; # Name of the querier's string constant used with createParam
     var_pre_exist = int(curr_line.split(',')[5].strip());
     pv_inhibit = int(curr_line.split(',')[6].strip());
+    pv_cmd_str = curr_line.split(',')[7].strip();
     
 
     #Generate query PV.  We will always do this
@@ -146,6 +147,19 @@ for curr_line in template_file:
     populate_pv_struct_line = 'pv_to_add.param_num = {};\n'.format(param_var_name);
     create_param_file.write(populate_pv_struct_line);
     populate_pv_struct_line = 'pv_to_add.param_q_num = {};\n'.format(param_query_var_name);
+    create_param_file.write(populate_pv_struct_line);
+    populate_pv_struct_line = 'pv_to_add.command_string = {};\n'.format(pv_cmd_str);
+    create_param_file.write(populate_pv_struct_line);
+    data_enum_str = "";
+    if pv_type == "d":
+        data_enum_str = "SD_DOUBLE";
+    elif pv_type == "i32":
+        data_enum_str = "SD_INT32";
+    else:                       # TODO Add support for strings
+        print("Error: unsupported type for param file generation.");
+        sys.exit(1);
+        
+    populate_pv_struct_line = 'pv_to_add.pv_type = {};\n'.format(data_enum_str);
     create_param_file.write(populate_pv_struct_line);
     insert_pv_line = 'pv_data_list.insert(pv_data_list.begin(), pv_to_add);\n\n';
     create_param_file.write(insert_pv_line);
