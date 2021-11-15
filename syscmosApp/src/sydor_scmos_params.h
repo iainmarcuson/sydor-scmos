@@ -16,7 +16,6 @@
 #define SDUseGatesString        "SD_USE_GATES"
 #define SDNumGatesString        "SD_NUM_GATES"
 #define SDNumFramesString       "SD_NUM_FRAMES"
-#define SDInterframeTimeString  "SD_INTERFRAME_TIME"
 #define SDSensorPowerString     "SD_SENSOR_POWER"
 #define SDRunNameString         "SD_RUN_NAME"
 #define SDSetNameString         "SD_SET_NAME"

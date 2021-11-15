@@ -1802,6 +1802,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   int status = asynSuccess;
   // NDArray *pData;
   const char *functionName = "syscmos";
+  CPV_Data_t pv_to_add;		// Structure to hold data to put in list
 
   // TRY here instead
   // plock_ControlPortIO = new epicsMutex(__FILE__, __LINE__);
@@ -1844,6 +1845,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
     return;
   }
 
+#include <gc_create.c>
   createParam(SDSettingString, asynParamInt32, &SDSetting);
   createParam(SDDelayTimeString, asynParamFloat64, &SDDelayTime);
   createParam(SDThresholdString, asynParamFloat64, &SDThreshold);
@@ -1855,7 +1857,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   createParam(SDUseGatesString, asynParamInt32, &SDUseGates);
   createParam(SDNumGatesString, asynParamInt32, &SDNumGates);
   createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
-  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
+  //  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
   createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
   createParam(SDDoTriggerString, asynParamInt32, &SDDoTrigger);
 

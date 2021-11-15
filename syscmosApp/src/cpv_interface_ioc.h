@@ -27,6 +27,16 @@ enum SD_Param_Type
    SD_STRING
   };
 
+typedef struct CPV_Type
+{
+  char *asynParamName;		// The asyn string in the Database file
+  char *asynParamQName;		// The asyn string in the Database file
+				// for the Querier
+  int param_num;		// The parameter number for the setter/getter
+  int param_q_num;		// The parameter number for the querier
+  char *command_string;		// The string for the command to DataViewer
+  enum SD_Param_Type pv_type;	// Data type of the PV
+} CPV_Data_t;
 
 class syscmos; // fwd proto
 

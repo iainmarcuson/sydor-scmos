@@ -1,6 +1,8 @@
 #ifndef SYSCMOS_H
 #define SYSCMOS_H
 
+#include <list>
+
 #include "cpv_interface_ioc.h"
 
 #define MAX_FILENAME_LEN 256
@@ -124,6 +126,9 @@ public:
 
     int SDSetting;
     #define FIRST_SD_PARAM SDSetting
+
+#include "gc_class_params.h"
+  
     int SDDelayTime; 
     int SDThreshold;
     int SDEnergy;
@@ -134,14 +139,14 @@ public:
     int SDUseGates; 
     int SDNumGates; 
     int SDNumCycles; 
-    int SDNumFrames; 
-    int SDInterframeTime;
+  ///int SDNumFrames; 
+  ///int SDInterframeTime;
     int SDDoTrigger;
     int SDRunName;
     int SDSetName;
     int SDSetDescription;
     
-    int SDSensorPower;
+  ///int SDSensorPower;
     int SDStartRun;
     //int SDTrigger;
     int SDReset;
@@ -149,11 +154,11 @@ public:
     int SDFirmwareVersion;
     int SDReadMode;
     int SDCommandOut;
-  int SDLinkStatus;
+  ///int SDLinkStatus;
   int SDEPICSLinkStatus;
 
-  int SDDSNUMode;
-  int SDPRNUMode;
+  ///int SDDSNUMode;
+  ///int SDPRNUMode;
   
   int SDRunStart;
   int SDSelectRun;
@@ -164,6 +169,7 @@ public:
     int SDNModules;
     #define LAST_SD_PARAM SDNModules
 
+  std::list<CPV_Data_t> pv_data_list;
   std::unordered_map<int, SD_Param_Type> pv_dv_types;
     /* These are the methods we implement from Mythen */
     #if 0

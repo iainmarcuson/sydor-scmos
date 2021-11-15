@@ -119,6 +119,10 @@ for curr_line in template_file:
     if var_pre_exist == 0:      # Don't create if already defined
         param_var_line = 'int {};\n'.format(param_var_name);
         param_var_file.write(param_var_line);
+    # Now generate the query variable entries
+    param_query_var_line = 'int {};\n\n'.format(param_query_var_name);
+    param_var_file.write(param_query_var_line);
+    
 
     # Create the AD Parameters
     ad_param_type = "";        # Initialize variable
@@ -133,9 +137,19 @@ for curr_line in template_file:
     if var_pre_exist == 0:      # Only create variable param if new
         create_param_line = 'createParam({}, {}, &{});\n'.format(param_var_str_name, ad_param_type, param_var_name);
         create_param_file.write(create_param_line);
-    create_query_param_line = 'createParam({}, asynParamInt32, &{});\n\n'.format(param_query_str_name, param_query_var_name);
+    create_query_param_line = 'createParam({}, asynParamInt32, &{});\n'.format(param_query_str_name, param_query_var_name);
     create_param_file.write(create_query_param_line);
-            
+    populate_pv_struct_line = 'pv_to_add.asynParamName = (char *) {};\n'.format(param_var_str_name);
+    create_param_file.write(populate_pv_struct_line);
+    populate_pv_struct_line = 'pv_to_add.asynParamQName = (char *) {};\n'.format(param_query_str_name);
+    create_param_file.write(populate_pv_struct_line);
+    populate_pv_struct_line = 'pv_to_add.param_num = {};\n'.format(param_var_name);
+    create_param_file.write(populate_pv_struct_line);
+    populate_pv_struct_line = 'pv_to_add.param_q_num = {};\n'.format(param_query_var_name);
+    create_param_file.write(populate_pv_struct_line);
+    insert_pv_line = 'pv_data_list.insert(pv_data_list.begin(), pv_to_add);\n\n';
+    create_param_file.write(insert_pv_line);
+    
 query_hdr_file.write('\n');
 param_str_hdr_file.write('\n');
 param_var_file.write('\n');
