@@ -146,21 +146,25 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
 //  Helper Function
 //
 
-bool CPV_Interface_IOC::_FindMatchingCmd( const char *cmdName, char *pvName)
+int CPV_Interface_IOC::_FindMatchingCmd( const int cmd_num, char *cmdName)
 {
   ///printf("FindMatchingCmd: cmd: \"%s\"\n", cmdName);
-  for (const auto &n : pv_dv_cmds)
+  for (const auto &n : m_syscmos->pv_data_list )
     {
-      if (strcmp(cmdName, n.second.c_str()) == 0)
+      if (cmd_num == n.param_num) // We match on a setter/getter
 	{
-	  strcpy(pvName, n.first.c_str());
-	  ///printf("FindMatchingCmd: pv: \"%s\"\n", pvName);
-	  return true;
+	  strcpy(cmdName, n.command_string);
+	  return 1;		// Note that we are a setter/getter
+	}
+      else if (cmd_num == n.param_q_num)
+	{
+	  strcpy(cmdName, n.command_string);
+	  return -1;		// Note we are a querier
 	}
     }
 
   ///TODO assert like in _FindMatchingPV()?
-  return false;
+  return 0;   ;			// Parameter not found
 }
 
 
@@ -198,8 +202,10 @@ int CPV_Interface_IOC::GetPV(const char *cmdName, int paramNum)
     
   m_syscmos->getParamName(0, paramNum, &paramName);
 
-  bMatch = _FindMatchingPV(paramName, s_cmdName);
-
+  ///FIXME TODO Handle the Get parameters
+  //bMatch = _FindResponsePV(paramName, s_cmdName);
+  bMatch = false;
+  
   if (!bMatch)
     {
       ///printf(" :: unhandled command:%s\n", paramName);
@@ -245,23 +251,18 @@ int CPV_Interface_IOC::GetPV(const char *cmdName, int paramNum)
 //    asynSuccess (= 0 ) calling function should call
 //   -1 = Unknown PV or unhandled.
 //    asynError ( = 3 )
-int CPV_Interface_IOC::SetPV(const char *pvName, epicsInt32 val)
+int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
 {
-  ///printf("F:%s pvName:%s, val:%d", __func__, pvName, val); // DEBUG
+  int cmdMatch = _FindMatchingCmd(pvNum, /* out */ s_cmdName);
 
-    bool bMatch = _FindMatchingPV(pvName, /* out */ s_cmdName);
-
-    if (!bMatch)
+    if (cmdMatch == 0)
     {
-        printf(" :: unhandled command:%s\n", pvName);
+      //TODO Put in lookup of command name here?
+        printf(" :: unhandled command:%i\n", pvNum);
         return (-1);
     }
-    else
-    {
-      ///printf(" cmdName = %s \n", s_cmdName);
-    }
-
-
+    ///TODDO Handle commands properly
+    
     bool bSpecialCommand = false;  (void)bSpecialCommand; // SUC
     if (s_cmdName[0] == kSPECIALCHAR_FLAG)
     {
@@ -293,20 +294,19 @@ int CPV_Interface_IOC::SetPV(const char *pvName, epicsInt32 val)
 //    asynSuccess (= 0 ) calling function should call
 //   -1 = Unknown PV or unhandled.
 //    asynError ( = 3 )
-int CPV_Interface_IOC::SetPV(const char *pvName, epicsFloat64 val)
+int CPV_Interface_IOC::SetPV(const int pvNum, epicsFloat64 val)
 {
-  ///printf("F:%s pvName:%s, val:%f", __func__, pvName, val); // DEBUG
-
-    bool bMatch = _FindMatchingPV(pvName, /*out */ s_cmdName);
+  int cmdMatch = _FindMatchingCmd(pvNum, /*out */ s_cmdName);
 
    
     // can decide HERE if PV is handled - or can forward to socket and look for ? response.
     // It is probably more efficient to check here first
 
 
-    if (!bMatch)
+    if (cmdMatch == 0)
     {
-        printf(" :: unhandled command:%s\n", pvName);
+      ///TODO Put in a lookup of command name?
+        printf(" :: unhandled command num:%i\n", pvNum);
         return (-1);
     }
     else
@@ -314,6 +314,7 @@ int CPV_Interface_IOC::SetPV(const char *pvName, epicsFloat64 val)
       ///printf(" cmdName = %s \n", s_cmdName);
     }
 
+    /// TODO Handle return value and commands properly
     //
     // SEND Request to change
     //
@@ -323,27 +324,19 @@ int CPV_Interface_IOC::SetPV(const char *pvName, epicsFloat64 val)
     
 };
 
-int CPV_Interface_IOC::SetPV(const char *pvName, const char *pval)
+int CPV_Interface_IOC::SetPV(const int pvNum, const char *pval)
 {
   ///printf("F:%s pvName:%s, val:%s", __func__, pvName, pval); // DEBUG
 
     // can decide HERE if PV is handled - or can forward to socket and look for ? response.
     // It is probably more efficient to check here first
 
-    if (strcmp(pvName,  SDCommandOutString) == 0)
-    {
-        // TODO - parse and create a query, strcpy(cmdName, "SetRunName");
-        // something like
-        //sprintf(m_outBuffer, "#%d:getpv<?>:%s?\r\n", m_sendCommandCounter++, cmdName);
-        //return writeWithReply(m_outBuffer); 
-        strcpy(s_cmdName, "!NOT YET IMPLEMENTED!");
-    }
+  int cmdMatch = _FindMatchingCmd(pvNum, /*out*/ s_cmdName);
 
-    bool bMatch = _FindMatchingPV(pvName, /*out*/ s_cmdName);
-
-    if (!bMatch)
+  if (cmdMatch == 4)
     {
-        printf(" :: unhandled command:%s\n", pvName);
+      ///TODO Put in a looklup of command name?
+        printf(" :: unhandled command number:%i\n", pvNum);
         return (-1);
     }
     else
@@ -351,7 +344,8 @@ int CPV_Interface_IOC::SetPV(const char *pvName, const char *pval)
       ///printf(" cmdName = %s \n", s_cmdName);
     }
 
-    
+
+  ///TODO Handle results properly
 
     // SEND Request to change
     //
@@ -508,7 +502,7 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
         }
         else if ( 0 == out[4].find("ERR") )
         {
-            int errcode = atoi(out[4].substr(3,4).c_str() );
+	  int errcode = atoi(out[4].substr(3,std::string::npos).c_str() );
             return (-errcode); //  **** EXIT
         }
         else
@@ -538,15 +532,21 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
         return (-100);      //  **** EXIT
     }
 
+    ///DEBUGGING
+    if (!bOK)
+      {
+	return -1;
+      }
+    
     ///printf("Debug F:%s %s %s OK:%d \n", __func__, 
     ///    strResponse, pvname.c_str(), bOK);
 
-    if (_FindMatchingCmd(pvname.c_str(), s_pvName))
+    if (_FindResponsePV(pvname.c_str(), nFunction))
       {
 	///printf("Found command %s in map search.\n", pvname.c_str());
 	///printf("asyn param name: %s\n", s_pvName);
 	///XXX Need to handle based on type
-	m_syscmos->findParam(s_pvName, nFunction);
+	//m_syscmos->findParam(s_pvName, nFunction);
 	///TODO Need to get response code correct
 	///FIXME type parsing is temporarily disabled
 	if (out[1].find("<i32>") != std::string::npos) // Integer type
@@ -568,4 +568,18 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
     
 
     return (ret);
+}
+
+bool CPV_Interface_IOC::_FindResponsePV(const char *cmd_str, int *pv_num)
+{
+  for (auto n: m_syscmos->pv_data_list)
+    {
+      if (strcmp(cmd_str, n.command_string) == 0)
+	{
+	  *pv_num = n.param_num; // XXX Never need to return the Query reference
+	  return true;
+	}
+    }
+  *pv_num = -1;
+  return false;
 }

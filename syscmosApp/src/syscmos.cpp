@@ -1467,7 +1467,7 @@ asynStatus syscmos::writeOctet(asynUser *pasynUser, const char *value,
 
   const char *pvName = NULL;
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   if (0 == ret)
   {
@@ -1550,7 +1550,7 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
     }
 
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",
 	 __FUNCTION__, ret, asynDisconnected, asynTimeout);
@@ -1640,7 +1640,7 @@ asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
   const char *pvName = NULL;
 
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   if (0 == ret)
   {
