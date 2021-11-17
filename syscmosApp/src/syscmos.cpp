@@ -1704,6 +1704,9 @@ int syscmos::init_query_pv()
   std::string pv_name;
 
 
+  /// XXX Test this
+  return 0;
+
   /// Wait for IOC init before manipulating database
   while (!interruptAccept)
     {
@@ -1856,16 +1859,16 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   createParam(SDBitDepthString, asynParamInt32, &SDBitDepth);
   createParam(SDUseGatesString, asynParamInt32, &SDUseGates);
   createParam(SDNumGatesString, asynParamInt32, &SDNumGates);
-  createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
+  ///createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
   //  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
-  createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
+  ///createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
   createParam(SDDoTriggerString, asynParamInt32, &SDDoTrigger);
 
-  createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
-  createParam(SDEPICSLinkStatusString, asynParamInt32, &SDEPICSLinkStatus);
+  ///createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
+  ///createParam(SDEPICSLinkStatusString, asynParamInt32, &SDEPICSLinkStatus);
 
-  createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
-  createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
+  ///createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
+  ///createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
   
   createParam(SDRunStartString, asynParamInt32, &SDRunStart);
   createParam(SDSelectRunString, asynParamInt32, &SDSelectRun);

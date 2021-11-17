@@ -134,7 +134,8 @@ field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_MUX")
 ##TODO Test this field(FLNK, "$(P)$(R)OutMux.PROC")
 #}
 
-include "query.db"
+include "gc_query.db"
+include "gc_params.db"
 
 #----------------------------------
 # Detector Setting
