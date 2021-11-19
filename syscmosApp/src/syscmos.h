@@ -142,8 +142,8 @@ public:
   ///int SDNumFrames; 
   ///int SDInterframeTime;
     int SDDoTrigger;
-    int SDRunName;
-    int SDSetName;
+  ///int SDRunName;
+  ///int SDSetName;
     int SDSetDescription;
     
   ///int SDSensorPower;

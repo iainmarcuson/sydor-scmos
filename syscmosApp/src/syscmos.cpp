@@ -1881,8 +1881,8 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   createParam(SDFirmwareVersionString, asynParamOctet, &SDFirmwareVersion);
 
   createParam(SDCommandOutString, asynParamOctet, &SDCommandOut);
-  createParam(SDRunNameString, asynParamOctet, &SDRunName );
-  createParam(SDSetNameString, asynParamOctet, &SDSetName );
+  ///createParam(SDRunNameString, asynParamOctet, &SDRunName );
+  ///createParam(SDSetNameString, asynParamOctet, &SDSetName );
   createParam(SDSetDescriptionString, asynParamOctet, &SDSetDescription );
 
   createParam(SDStartRunString, asynParamInt32, &SDStartRun);

@@ -14,3 +14,6 @@ $(P)$(R)ReverseX, REVERSE_X, i32, ADReverseX, ADReverseXString, 1, 1, "HFlip"
 $(P)$(R)ReverseY, REVERSE_Y, i32, ADReverseY, ADReverseYString, 1, 1, "VFlip"
 $(P)$(R)DSNU, SD_DSNU, i32, SDDSNUMode, SDDSNUString, 0, 1, "DSNU"
 $(P)$(R)PRNU, SD_PRNU, i32, SDPRNUMode, STPRNUString, 0, 1, "PRNU"
+$(P)$(R)RunName, SD_RUN_NAME, s, SDRunName, SDRunNameString, 0, 0, "RunName"
+$(P)$(R)SetName, SD_SET_NAME, s, SDSetName, SDSetNameString, 0, 0, "SetName"
+

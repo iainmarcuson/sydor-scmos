@@ -69,10 +69,13 @@ for curr_line in template_file:
         record_suffix = ["", "_RBV"]; # Suffix for setters and getters
         if pv_type == 'd':
             record_type = ["ao", "ai"];
-            record_dtyp = "asynFloat64";
+            record_dtyp = ["asynFloat64", "asynFloat64"];
         elif pv_type == 'i32':
             record_type = ["longout", "longin"];
-            record_dtyp = "asynInt32";
+            record_dtyp = ["asynInt32", "asynInt32"];
+        elif pv_type == 's':
+            record_type = ["stringout", "stringin"];
+            record_dtyp = ["asynOctetWrite", "asynOctetRead"];
         else:                   # TODO Add string handling
             print("Invalid data type.");
             sys.exit(1);
@@ -83,7 +86,7 @@ for curr_line in template_file:
             param_db_file.write(record_line);
             param_db_file.write('{\n');
             # TODO Add in support for initial values and PINI
-            dtyp_line = 'field(DTYP, "{}")\n'.format(record_dtyp);
+            dtyp_line = 'field(DTYP, "{}")\n'.format(record_dtyp[record_idx]);
             param_db_file.write(dtyp_line);
             if record_idx == 0:
                 scan_line = 'field(SCAN, "Passive")\n';
@@ -131,7 +134,9 @@ for curr_line in template_file:
         ad_param_type = "asynParamFloat64";
     elif pv_type == 'i32':  # An integer param
         ad_param_type = "asynParamInt32";
-    else:                   # TODO Add string types
+    elif pv_type == 's':        # A string param
+        ad_param_type = "asynParamOctet";
+    else:                  
         print("Bad state in creating AD parameters.");
         sys.exit(1);
 
@@ -155,7 +160,9 @@ for curr_line in template_file:
         data_enum_str = "SD_DOUBLE";
     elif pv_type == "i32":
         data_enum_str = "SD_INT32";
-    else:                       # TODO Add support for strings
+    elif pv_type == "s":
+        data_enum_str = "SD_STRING";
+    else:                       
         print("Error: unsupported type for param file generation.");
         sys.exit(1);
         

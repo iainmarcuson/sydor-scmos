@@ -146,25 +146,34 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
 //  Helper Function
 //
 
-int CPV_Interface_IOC::_FindMatchingCmd( const int cmd_num, char *cmdName)
+int CPV_Interface_IOC::_FindMatchingCmd( const int cmd_num, char *cmdName, enum SD_Param_Type *data_type) //data_type = NULL
 {
   ///printf("FindMatchingCmd: cmd: \"%s\"\n", cmdName);
+  int ret = 0;		// Default to no match
   for (const auto &n : m_syscmos->pv_data_list )
     {
       if (cmd_num == n.param_num) // We match on a setter/getter
 	{
 	  strcpy(cmdName, n.command_string);
-	  return 1;		// Note that we are a setter/getter
+	  ret = 1;		// Note that we are a settter/getter
 	}
       else if (cmd_num == n.param_q_num)
 	{
 	  strcpy(cmdName, n.command_string);
-	  return -1;		// Note we are a querier
+	  ret = -1;		// Note we are a querier
+	}
+      if (ret)	// We found a match 
+	{
+	  if (data_type)	// Returning type as well
+	    {
+	      *data_type = n.pv_type;
+	    }
+	  return ret;
 	}
     }
-
   ///TODO assert like in _FindMatchingPV()?
-  return 0;   ;			// Parameter not found
+  
+  return 0;			// Parameter not found
 }
 
 
@@ -253,7 +262,8 @@ int CPV_Interface_IOC::GetPV(const char *cmdName, int paramNum)
 //    asynError ( = 3 )
 int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
 {
-  int cmdMatch = _FindMatchingCmd(pvNum, /* out */ s_cmdName);
+  enum SD_Param_Type data_type;
+  int cmdMatch = _FindMatchingCmd(pvNum, /* out */ s_cmdName, &data_type);
 
     if (cmdMatch == 0)
     {
@@ -261,7 +271,7 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
         printf(" :: unhandled command:%i\n", pvNum);
         return (-1);
     }
-    ///TODDO Handle commands properly
+    ///TODO Handle commands properly
     
     bool bSpecialCommand = false;  (void)bSpecialCommand; // SUC
     if (s_cmdName[0] == kSPECIALCHAR_FLAG)
@@ -269,11 +279,30 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
         bSpecialCommand = _HandleSpecialCommands(s_cmdName);
         // ^ returns long string in m_privateBuffer
     }
-    else if (s_cmdName[0] == kGETCHAR_FLAG)
+    if (cmdMatch < 0)		// We are doing a get
       {
-	return GetPV(s_cmdName, val);
+	char * type_string;
+	if (data_type == SD_INT32)
+	  {
+	    type_string = kSTR_INT32;
+	  }
+	else if (data_type == SD_DOUBLE)
+	  {
+	    type_string = kSTR_DOUBLE;
+	  }
+	else if (data_type == SD_STRING)
+	  {
+	    type_string = kSTR_STRING;
+	  }
+	else			// Shouldn't be here
+	  {
+	    printf("Unknown query data type: %i\n", data_type);
+	    return -1;
+	  }
+	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		 "#%d:getpv<%s>:%s?\r\n", m_sendCommandCounter++, type_string, s_cmdName);
       }
-    else
+    else 			// We are doing a set -- cmdMatch > 0
     {
         //
         // SEND Request to change

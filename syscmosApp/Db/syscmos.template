@@ -77,7 +77,36 @@ field(PINI, "NO")
 
 record(mbbo, "$(P)$(R)TriggerMode")
 {
-field(PINI, "NO")
+field(PINI, "YES")
+field(VAL, "1")
+field(ZRVL, "0")
+field(ZRST, "Sequence")
+field(ONVL, "1")
+field(ONST, "Standard")
+field(TWVL, "2")
+field(TWST, "Synchronous")
+field(THVL, "3")
+field(THST, "Global")
+field(FRVL, "4")
+field(FRST, "Software")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+field(PINI, "YES")
+field(VAL, "1")
+field(ZRVL, "0")
+field(ZRST, "Sequence")
+field(ONVL, "1")
+field(ONST, "Standard")
+field(TWVL, "2")
+field(TWST, "Synchronous")
+field(THVL, "3")
+field(THST, "Global")
+field(FRVL, "4")
+field(FRST, "Software")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
 record(longout, "$(P)$(R)NumExposures")
@@ -234,18 +263,19 @@ record(stringout, "$(P)$(R)QueryPlugin")
 }
 
 
-record(stringout, "$(P)$(R)RunName")
-{
-   field(DTYP, "asynOctetWrite")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_NAME")
-   field(VAL,  "Unknown")
-}
-record(stringout, "$(P)$(R)SetName")
-{
-   field(DTYP, "asynOctetWrite")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_NAME")
-   field(VAL,  "Unknown")
-}
+#record(stringout, "$(P)$(R)RunName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_NAME")
+#   field(VAL,  "Unknown")
+#}
+#record(stringout, "$(P)$(R)SetName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_NAME")
+#   field(VAL,  "Unknown")
+#}
+
 record(stringout, "$(P)$(R)SetDescription")
 {
    field(DTYP, "asynOctetWrite")
