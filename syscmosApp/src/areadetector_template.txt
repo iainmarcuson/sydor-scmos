@@ -1,5 +1,5 @@
 # This is a comma-delimited file of Area Detector parameters
-# PV Name, ASYN Param Name, ASYN Param Type, Parameter Variable Name, Parameter String Name, Boolean Pre-existing, Boolean PV Inhibit
+# PV Name, ASYN Param Name, ASYN Param Type, Parameter Variable Name, Parameter String Name, Boolean Pre-existing, Boolean PV Inhibit, DataViewer String
 # Pre-existing is true if the variable already exists in base classes of AreaDetector, or false if a new variable is being created.
 # PV Inhibit will inhibit generation of a PV.  This is primarily intended for mbbo-type PVs, that do not lend themselves to automatic generation.  This is independent of Pre-existing, as one may want to override a PV
 $(P)$(R)AcquireTime, ACQ_TIME, d, ADAcquireTime, ADAcquireTimeString, 1, 1, "Exposure"
@@ -16,4 +16,5 @@ $(P)$(R)DSNU, SD_DSNU, i32, SDDSNUMode, SDDSNUString, 0, 1, "DSNU"
 $(P)$(R)PRNU, SD_PRNU, i32, SDPRNUMode, STPRNUString, 0, 1, "PRNU"
 $(P)$(R)RunName, SD_RUN_NAME, s, SDRunName, SDRunNameString, 0, 0, "RunName"
 $(P)$(R)SetName, SD_SET_NAME, s, SDSetName, SDSetNameString, 0, 0, "SetName"
+$(P)$(R)StartTrig, SD_START_TRIG, i32, SDStartTrig, SDStartTrigString, 0, 0, "actionTrigger"
 
