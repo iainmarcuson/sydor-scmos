@@ -77,7 +77,36 @@ field(PINI, "NO")
 
 record(mbbo, "$(P)$(R)TriggerMode")
 {
-field(PINI, "NO")
+field(PINI, "YES")
+field(VAL, "1")
+field(ZRVL, "0")
+field(ZRST, "Sequence")
+field(ONVL, "1")
+field(ONST, "Standard")
+field(TWVL, "2")
+field(TWST, "Synchronous")
+field(THVL, "3")
+field(THST, "Global")
+field(FRVL, "4")
+field(FRST, "Software")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+field(PINI, "YES")
+field(VAL, "1")
+field(ZRVL, "0")
+field(ZRST, "Sequence")
+field(ONVL, "1")
+field(ONST, "Standard")
+field(TWVL, "2")
+field(TWST, "Synchronous")
+field(THVL, "3")
+field(THST, "Global")
+field(FRVL, "4")
+field(FRST, "Software")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
 record(longout, "$(P)$(R)NumExposures")
@@ -114,27 +143,8 @@ field(PINI, "NO")
 # PV Companions for Queries
 #----------------------------------
 
-record(longout, "$(P)$(R)OutMux")
-{
-field(DTYP, "asynInt32")
-field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_MUX")
-field(DISV, "1")
-field(DISA, "1")
-}
-
-record(longin, "$(P)$(R)OutMux_RBV")
-{
-field(DTYP, "asynInt32")
-field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_MUX")
-}
-
-#///record(longout, "$(P)$(R)AcquireTime_Q")
-#{
-#field(OUT, "$(P)$(R)OutMux PP")
-##TODO Test this field(FLNK, "$(P)$(R)OutMux.PROC")
-#}
-
-include "query.db"
+include "gc_query.db"
+include "gc_params.db"
 
 #----------------------------------
 # Detector Setting
@@ -253,18 +263,19 @@ record(stringout, "$(P)$(R)QueryPlugin")
 }
 
 
-record(stringout, "$(P)$(R)RunName")
-{
-   field(DTYP, "asynOctetWrite")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_NAME")
-   field(VAL,  "Unknown")
-}
-record(stringout, "$(P)$(R)SetName")
-{
-   field(DTYP, "asynOctetWrite")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_NAME")
-   field(VAL,  "Unknown")
-}
+#record(stringout, "$(P)$(R)RunName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_NAME")
+#   field(VAL,  "Unknown")
+#}
+#record(stringout, "$(P)$(R)SetName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_NAME")
+#   field(VAL,  "Unknown")
+#}
+
 record(stringout, "$(P)$(R)SetDescription")
 {
    field(DTYP, "asynOctetWrite")
@@ -479,53 +490,6 @@ record (bi, "$(P)$(R)UseCountRate_RBV")
 }
 
 #----------------------------------
-# Set Deadtime Constant (used in rate correction)
-#----------------------------------
-record(ao, "$(P)$(R)Tau")
-{
-    field (DESC, "Deadtime Constant")
-    field (DTYP, "asynFloat64")
-    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_TAU")
-    field (EGU,  "ns")
-    field (PREC, "6")
-    field (VAL,  "-1.0")
-    #field (PINI, "YES")
-}
-
-record(ai, "$(P)$(R)Tau_RBV")
-{
-    field(DESC, "Deadtime Constand")
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_TAU")
-    field(EGU,  "ns")
-    field(PREC, "6")
-    field(SCAN, "I/O Intr")
-}
-
-#----------------------------------
-# Enable Bad Channel Interpolation
-#----------------------------------
-record (bo, "$(P)$(R)UseBadChanIntrpl")
-{
-    field (DESC, "Enable BadChannel Intrpl")
-    field (DTYP, "asynInt32")
-    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_USE_BADCHANNEL_INTRPL")
-    field (ZNAM, "Disable")
-    field (ONAM, "Enable")
-    field (VAL,  "1")
-    #field (PINI, "YES")
-}
-
-record (bi, "$(P)$(R)UseBadChanIntrpl_RBV")
-{
-    field (DESC, "Enable BadChannel Intrpl")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_USE_BADCHANNEL_INTRPL")
-    field (ZNAM, "Disabled")
-    field (ONAM, "Enabled")
-    field (SCAN, "I/O Intr")
-}
-#----------------------------------
 # Set Number of Data Bits
 #----------------------------------
 record (mbbo, "$(P)$(R)BitDepth")
@@ -553,51 +517,6 @@ record (longin, "$(P)$(R)BitDepth_RBV")
     field (SCAN, "I/O Intr")
 }
 
-#----------------------------------
-# Enable Gates
-#----------------------------------
-
-record (bo, "$(P)$(R)UseGates")
-{
-    field (DESC, "Enable gates")
-    field (DTYP, "asynInt32")
-    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_USE_GATES")
-    field (ZNAM, "Disable")
-    field (ONAM, "Enable")
-    field (VAL,  "0")
-    #field (PINI, "YES")
-}
-
-record (bi, "$(P)$(R)UseGates_RBV")
-{
-    field (DESC, "Enable gates")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_USE_GATES")
-    field (ZNAM, "Disabled")
-    field (ONAM, "Enabled")
-    field (SCAN, "I/O Intr")
-}
-
-#----------------------------------
-# Number of Gates
-#----------------------------------
-record (longout, "$(P)$(R)NumGates")
-{
-    field (DESC, "Number of gates")
-    field (DTYP, "asynInt32")
-    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_NUM_GATES")
-    field (VAL,  "1")
-    #field (PINI, "YES")
-}
-
-record (longin, "$(P)$(R)NumGates_RBV")
-{
-    field (DESC, "Number of gates")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_NUM_GATES")
-    field (SCAN, "I/O Intr")
-}
-
 
 #----------------------------------
 # Number of Frames
@@ -620,51 +539,6 @@ record (longin, "$(P)$(R)NumFrames_RBV")
 }
 
 
-## YF removed based. class has Trigger mode Internal / External.
-##----------------------------------
-## Trigger Mode
-##----------------------------------
-#record (mbbo, "$(P)$(R)TriggerMode")
-#{
-#    field (DESC, "Detector Trigger mode")
-#    field (DTYP, "asynInt32")
-#    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_TRIGGER")
-#    field (ZRST, "None")
-#    field (ZRVL, "0")
-#    field (ONST, "Single")
-#    field (ONVL, "1")
-#    field (TWST, "Continuous")
-#    field (TWVL, "2")
-#    field (VAL,  "0")
-#    #field (PINI, "YES")
-#}
-record (mbbi, "$(P)$(R)TriggerMode_RBV")
-{
-    field (DESC, "Detector Trigger mode")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_TRIGGER")
-    field (ZRST, "None")
-    field (ZRVL, "0")
-    field (ONST, "Single")
-    field (ONVL, "1")
-    field (TWST, "Continuous")
-    field (TWVL, "2")
-    field (THST, "unknown")
-    field (THVL, "3")
-    field (SCAN, "I/O Intr")
-}
-
-#----------------------------------
-# Readback Number of Detector Modules
-#----------------------------------
-record (longin, "$(P)$(R)NumModules_RBV")
-{
-    field (DESC, "Number of modules")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_NMODULES")
-    field (SCAN, "I/O Intr")
-}
-
 #----------------------------------
 # Firmware Version
 #----------------------------------
@@ -673,34 +547,6 @@ record(stringin, "$(P)$(R)FirmwareVersion")
    #field(PINI, "YES")
    field(DTYP, "asynOctetRead")
    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_FIRMWARE_VERSION")
-}
-
-#----------------------------------
-# Read Mode
-#----------------------------------
-record (mbbo, "$(P)$(R)ReadMode")
-{
-    field (DESC, "Readout Type")
-    field (DTYP, "asynInt32")
-    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_READ_MODE")
-    field (ZRST, "Raw")
-    field (ZRVL, "0")
-    field (ONST, "Corrected")
-    field (ONVL, "1")
-    field (VAL,  "0")
-    #field (PINI, "YES")
-}
-
-record (mbbi, "$(P)$(R)ReadMode_RBV")
-{
-    field (DESC, "Read Mode Setting RBV")
-    field (DTYP, "asynInt32")
-    field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_READ_MODE")
-    field (ZRST, "Raw")
-    field (ZRVL, "0")
-    field (ONST, "Corrected")
-    field (ONVL, "1")
-    field (SCAN, "I/O Intr")
 }
 
 record(mbbo, "$(P)$(R)ImageMode")

@@ -27,6 +27,16 @@ enum SD_Param_Type
    SD_STRING
   };
 
+typedef struct CPV_Type
+{
+  char *asynParamName;		// The asyn string in the Database file
+  char *asynParamQName;		// The asyn string in the Database file
+				// for the Querier
+  int param_num;		// The parameter number for the setter/getter
+  int param_q_num;		// The parameter number for the querier
+  char *command_string;		// The string for the command to DataViewer
+  enum SD_Param_Type pv_type;	// Data type of the PV
+} CPV_Data_t;
 
 class syscmos; // fwd proto
 
@@ -89,9 +99,9 @@ public:
 	
 	int Init( asynOctetSyncIO *pasynOctetSyncIO, asynUser *pasynUserMeter );
 	
-	int SetPV(const char * pvName, epicsInt32 val);
-	int SetPV(const char * pvName, epicsFloat64 val);
-	int SetPV(const char * pvName, const char *pval);
+	int SetPV(const int pvNum, epicsInt32 val);
+	int SetPV(const int pvNum, epicsFloat64 val);
+	int SetPV(const int pvNum, const char *pval);
   int GetPV(const char *cmdName, int paramNum);
 	int ParseResponse(const char *strResponse, int *nFunction, PRType *prt);
 
@@ -100,9 +110,10 @@ public:
 
 protected:
 	asynStatus writeWithReply(char *pstr);
-	bool _FindMatchingPV( const char *pvName, char *cmdName);
+  bool _FindMatchingPV( const char *cmd_num, char *cmdName);
 	bool _HandleSpecialCommands(const char *cmdName);
-  bool _FindMatchingCmd(const char *cmdName, char *pvName);
+  int _FindMatchingCmd(const int cmd_num, char *cmdName, enum SD_Param_Type *data_type = NULL);
+  bool _FindResponsePV(const char *cmd_str, int *pv_num); ///TODO Fix this and add functionality
 protected:
 	asynOctetSyncIO *m_pasynOctetSyncIO = NULL;	
 	asynUser        *m_pasynUserMeter = NULL;

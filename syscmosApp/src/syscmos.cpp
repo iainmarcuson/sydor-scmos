@@ -1467,7 +1467,7 @@ asynStatus syscmos::writeOctet(asynUser *pasynUser, const char *value,
 
   const char *pvName = NULL;
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   if (0 == ret)
   {
@@ -1550,7 +1550,7 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
     }
 
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",
 	 __FUNCTION__, ret, asynDisconnected, asynTimeout);
@@ -1640,7 +1640,7 @@ asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
   const char *pvName = NULL;
 
   getParamName(0 /*int list*/, function, &pvName);
-  int ret = m_cpv_interface->SetPV(pvName, value);
+  int ret = m_cpv_interface->SetPV(function, value);
 
   if (0 == ret)
   {
@@ -1703,6 +1703,9 @@ int syscmos::init_query_pv()
   long param_num;
   std::string pv_name;
 
+
+  /// XXX Test this
+  return 0;
 
   /// Wait for IOC init before manipulating database
   while (!interruptAccept)
@@ -1802,6 +1805,7 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   int status = asynSuccess;
   // NDArray *pData;
   const char *functionName = "syscmos";
+  CPV_Data_t pv_to_add;		// Structure to hold data to put in list
 
   // TRY here instead
   // plock_ControlPortIO = new epicsMutex(__FILE__, __LINE__);
@@ -1844,26 +1848,24 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
     return;
   }
 
+#include <gc_create.c>
   createParam(SDSettingString, asynParamInt32, &SDSetting);
   createParam(SDDelayTimeString, asynParamFloat64, &SDDelayTime);
   createParam(SDThresholdString, asynParamFloat64, &SDThreshold);
   createParam(SDEnergyString, asynParamFloat64, &SDEnergy);
   createParam(SDUseFlatFieldString, asynParamInt32, &SDUseFlatField);
   createParam(SDUseCountRateString, asynParamInt32, &SDUseCountRate);
-  createParam(SDUseBadChanIntrplString, asynParamInt32, &SDUseBadChanIntrpl);
   createParam(SDBitDepthString, asynParamInt32, &SDBitDepth);
-  createParam(SDUseGatesString, asynParamInt32, &SDUseGates);
-  createParam(SDNumGatesString, asynParamInt32, &SDNumGates);
-  createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
-  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
-  createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
+  ///createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
+  //  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
+  ///createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
   createParam(SDDoTriggerString, asynParamInt32, &SDDoTrigger);
 
-  createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
+  //createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
   createParam(SDEPICSLinkStatusString, asynParamInt32, &SDEPICSLinkStatus);
 
-  createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
-  createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
+  ///createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
+  ///createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
   
   createParam(SDRunStartString, asynParamInt32, &SDRunStart);
   createParam(SDSelectRunString, asynParamInt32, &SDSelectRun);
@@ -1876,14 +1878,11 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
   
   // YF already in base createParam(SDTriggerString, asynParamInt32, &SDTrigger);
   createParam(SDResetString, asynParamInt32, &SDReset);
-  // YF prob not relevant createParam(SDTauString, asynParamFloat64, &SDTau);
-  createParam(SDNModulesString, asynParamInt32, &SDNModules);
   createParam(SDFirmwareVersionString, asynParamOctet, &SDFirmwareVersion);
-  createParam(SDReadModeString, asynParamInt32, &SDReadMode);
 
   createParam(SDCommandOutString, asynParamOctet, &SDCommandOut);
-  createParam(SDRunNameString, asynParamOctet, &SDRunName );
-  createParam(SDSetNameString, asynParamOctet, &SDSetName );
+  ///createParam(SDRunNameString, asynParamOctet, &SDRunName );
+  ///createParam(SDSetNameString, asynParamOctet, &SDSetName );
   createParam(SDSetDescriptionString, asynParamOctet, &SDSetDescription );
 
   createParam(SDStartRunString, asynParamInt32, &SDStartRun);

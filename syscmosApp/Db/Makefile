@@ -12,8 +12,8 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 
 DB += syscmos.template
-DB += query.db
-
+DB += gc_query.db
+DB += gc_params.db
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>
