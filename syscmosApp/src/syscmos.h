@@ -6,7 +6,7 @@
 #include "cpv_interface_ioc.h"
 
 #define MAX_FILENAME_LEN 256
-#define MAX_DIMS      2048
+#define MAX_DIMS      4096
 #define MAX_COMMAND_LEN 128
 #define MAX_NMODULES 2
 #define M1K_TIMEOUT 5.0
@@ -14,7 +14,7 @@
 #define MAX_TRIGGER_TIMEOUT_COUNT 50
 
 //Definitions for GenCam
-#define SYSCMOS_MAX_DIM 4096	// Maximum size of a dimension of an image
+#define SYSCMOS_MAX_DIM MAX_DIMS	// Maximum size of a dimension of an image
 #define SYSCMOS_MAX_SIZE 8	// Maximum member size -- double or 64-bit int
 
 enum eImageType

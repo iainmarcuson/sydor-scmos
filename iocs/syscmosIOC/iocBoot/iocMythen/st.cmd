@@ -11,8 +11,8 @@ syscmosApp_registerRecordDeviceDriver(pdbbase)
 
 #drvAsynIPPortConfigure("portName","hostInfo",priority,noAutoConnect,
 #                        noProcessEos)
-drvAsynIPPortConfigure("IP_Ctrl", "192.168.11.177:10030", 0, 0, 0)
-drvAsynIPPortConfigure("IP_Data", "192.168.11.177:10031", 0, 0, 0)
+drvAsynIPPortConfigure("IP_Ctrl", "127.0.0.1:10030", 0, 0, 0)
+drvAsynIPPortConfigure("IP_Data", "127.0.0.1:10031", 0, 0, 0)
 
 ## Testing at YF Home
 #drvAsynIPPortConfigure("IP_Ctrl", "YoramSoftDevLT:10030", 0, 0, 0)
@@ -33,7 +33,7 @@ drvAsynIPPortConfigure("IP_Data", "192.168.11.177:10031", 0, 0, 0)
 #asynSetTraceMask("IP_M1K",0,3)
 
 #epicsEnvSet("PREFIX","dp_mythen1K:")
-epicsEnvSet("PREFIX","dp:")
+epicsEnvSet("PREFIX","dp2:")
 epicsEnvSet("PORT",   "SD1")
 
 # YF less typing. v v v
@@ -65,7 +65,7 @@ dbLoadRecords("$(SYSCMOS)/syscmosApp/Db/syscmos.template", "P=$(PREFIX),R=cam1:,
 
 # Create a standard arrays plugin
 NDStdArraysConfigure("Image1", 3, 0, "$(PORT)", 0, 0)
-dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=4194304")
+dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image1:,PORT=Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=16777216")
 
 # Load all other plugins using commonPlugins.cmd
 #///< $(ADCORE)/iocBoot/commonPlugins.cmd

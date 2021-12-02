@@ -1007,6 +1007,15 @@ void syscmos::acquisitionTask()
         status = pasynOctetSyncIO->read(pasynDataMeter_, (char *)&frame_data, sizeof(frame_data), 10.5, &nread, &eomReason); ///Reduced timeout from 600.5 to 10.5
         ///
         printf("Received %li of %li bytes for frame_data.\n", nread, nread_expect);
+	if (nread < nread_expect)
+	  {
+	    printf("Insufficient bytes: restarting.\n");
+	    fflush(stdout);
+	    pasynOctetSyncIO->flush(pasynDataMeter_);
+	    goto acq_loop_head_;
+	  }
+
+	pixel_size = -1;	// Initialize to invalid value
         printf("Image Type is %i.\n", doc_data.enImageType);
         fflush(stdout);
         // XXX TODO Handle case of error in frame data
@@ -1025,7 +1034,22 @@ void syscmos::acquisitionTask()
           pixel_size = 8;
         }
 
+	if ((pixel_size < 0) || (pixel_size > SYSCMOS_MAX_SIZE))	// A proper image type will set this to a proper value, and check for too large.
+	  {
+	    printf("Invalid image type.  Restarting.\n");
+	    fflush(stdout);
+	    pasynOctetSyncIO->flush(pasynDataMeter_);
+	    goto acq_loop_head_;
+	  }
+
         nread_expect = pixel_size * doc_data.width * doc_data.height;
+	if ((doc_data.width > SYSCMOS_MAX_DIM) || (doc_data.height > SYSCMOS_MAX_DIM))
+	  {
+	    printf("Invalid dimensions %iW x %iH.  Restarting.\n", doc_data.width, doc_data.height);
+	    fflush(stdout);
+	    pasynOctetSyncIO->flush(pasynDataMeter_);
+	    goto acq_loop_head_;
+	  }
 
         ///
         printf("Expecting image size %ix%i and %li bytes.\n", doc_data.width, doc_data.height, nread_expect);
