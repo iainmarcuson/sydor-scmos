@@ -1574,6 +1574,14 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
     }
 
   getParamName(0 /*int list*/, function, &pvName);
+
+  ///XXX TODO ICM This may be more widely applicable than currently implemented
+  if ((function == ADMinX) || (function == ADMinY)
+      || (function == ADSizeX) || (function == ADSizeY)) // Special handling for these
+    {
+      setIntegerParam(function, value);
+    }
+  
   int ret = m_cpv_interface->SetPV(function, value);
 
   printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",

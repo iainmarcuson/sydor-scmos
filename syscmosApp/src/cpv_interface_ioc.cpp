@@ -134,6 +134,17 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
 	printf("Select Run command string: %s\n", m_privateBuffer);
         bret = true;    
     }
+    else if (strcmp(pcmd, "AcqROI") == 0)
+      {
+	int min_x, min_y, size_x, size_y;
+	m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
+	m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
+	m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
+	m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
+	snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+		 "#%d:setpv<s>:Region:%i,%i,%i,%i\r\n", 
+		 m_sendCommandCounter++, min_x, min_y, size_x, size_y);
+      }
 
     ///
     fflush(stdout);
@@ -274,12 +285,12 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
     ///TODO Handle commands properly
     
     bool bSpecialCommand = false;  (void)bSpecialCommand; // SUC
-    if (s_cmdName[0] == kSPECIALCHAR_FLAG)
+    if (s_cmdName[0] == kSPECIALCHAR_FLAG) // TODO Add query support
     {
         bSpecialCommand = _HandleSpecialCommands(s_cmdName);
         // ^ returns long string in m_privateBuffer
     }
-    if (cmdMatch < 0)		// We are doing a get
+    else if (cmdMatch < 0)		// We are doing a get
       {
 	char * type_string;
 	if (data_type == SD_INT32)
