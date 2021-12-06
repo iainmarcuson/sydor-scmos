@@ -21,4 +21,5 @@ $(P)$(R)MinX, MIN_X, i32, ADMinX, ADMinXString, 1, 1, "@AcqROI"
 $(P)$(R)MinY, MIN_Y, i32, ADMinY, ADMinYString, 1, 1, "@AcqROI"
 $(P)$(R)SizeX, SIZE_X, i32, ADSizeX, ADSizeXString, 1, 1, "@AcqROI"
 $(P)$(R)SizeY, SIZE_Y, i32, ADSizeY, ADSizeYString, 1, 1, "@AcqROI"
+$(P)$(R)EnableRegion, SD_ENABLE_ROI, i32, SDEnableROI, SDEnableROIString, 0, 0, "@AcqROI"
 

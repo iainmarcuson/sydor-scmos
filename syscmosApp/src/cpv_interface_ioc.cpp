@@ -136,14 +136,15 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
     }
     else if (strcmp(pcmd, "AcqROI") == 0)
       {
-	int min_x, min_y, size_x, size_y;
+	int enable_roi, min_x, min_y, size_x, size_y;
+	m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
 	m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
 	m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
 	m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
 	m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
 	snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-		 "#%d:setpv<s>:Region:%i,%i,%i,%i\r\n", 
-		 m_sendCommandCounter++, min_x, min_y, size_x, size_y);
+		 "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
+		 m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
       }
 
     ///
@@ -609,9 +610,10 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 	ret = 1;		// A success, but we will not handle after return
 	if (pvname == "Region")	// A region lookup
 	  {
-	    int min_x, min_y, size_x, size_y;
-	    sscanf(strval.c_str(), " %i , %i , %i , %i ", &min_x, &min_y,
+	    int enable_roi, min_x, min_y, size_x, size_y;
+	    sscanf(strval.c_str(), " %i , %i , %i , %i , %i ", &enable_roi, &min_x, &min_y,
 		   &size_x, &size_y);
+	    m_syscmos->setIntegerParam(m_syscmos->SDEnableROI, enable_roi);
 	    m_syscmos->setIntegerParam(m_syscmos->ADMinX, min_x);
 	    m_syscmos->setIntegerParam(m_syscmos->ADMinY, min_y);
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeX, size_x);
