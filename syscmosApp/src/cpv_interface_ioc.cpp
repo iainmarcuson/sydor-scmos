@@ -562,6 +562,7 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
             return (-3); //  **** EXIT
         }
 
+	///ICM TODO Should probably set bOK true here.
         pvname = out[2];
         strval = out[3];
     }
@@ -603,12 +604,37 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 	    prt->fval = atof(strval.c_str());
 	  }
       }
+    else if (_FindSpecialResponse(pvname)) // Could be a special command
+      {
+	ret = 1;		// A success, but we will not handle after return
+	if (pvname == "Region")	// A region lookup
+	  {
+	    int min_x, min_y, size_x, size_y;
+	    sscanf(strval.c_str(), " %i , %i , %i , %i ", &min_x, &min_y,
+		   &size_x, &size_y);
+	    m_syscmos->setIntegerParam(m_syscmos->ADMinX, min_x);
+	    m_syscmos->setIntegerParam(m_syscmos->ADMinY, min_y);
+	    m_syscmos->setIntegerParam(m_syscmos->ADSizeX, size_x);
+	    m_syscmos->setIntegerParam(m_syscmos->ADSizeY, size_x);
+	  }
+      }
 
     // TODO: create MapToDV( ADAcquireTimeString) - returns IntegTime
     
-
+      /// TODO May want to return a different code if _FindResponsePV and 
+      /// _FindSpecialResponsePV are false
     return (ret);
 }
+
+bool CPV_Interface_IOC::_FindSpecialResponse(const std::string &cmd_str)
+{
+  if (cmd_str == "Region")
+    {
+      return true;
+    }
+  return false;
+}
+
 
 bool CPV_Interface_IOC::_FindResponsePV(const char *cmd_str, int *pv_num)
 {
