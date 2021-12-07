@@ -1577,7 +1577,8 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
   ///XXX TODO ICM This may be more widely applicable than currently implemented
   if ((function == ADMinX) || (function == ADMinY)
-      || (function == ADSizeX) || (function == ADSizeY)) // Special handling for these
+      || (function == ADSizeX) || (function == ADSizeY)
+      || (function == SDEnableROI)) // Special handling for these
     {
       setIntegerParam(function, value);
     }
