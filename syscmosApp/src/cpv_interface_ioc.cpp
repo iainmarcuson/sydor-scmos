@@ -86,7 +86,7 @@ int CPV_Interface_IOC::Init(asynOctetSyncIO *pasynOctetSyncIO,
 //  creates returned string in m_privateBuffer
 //  returns true if special command was detected.
 //
-bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
+bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_type)
 {
     // @SPECIAL_START_RUN
     const char *pcmd = acmdName + 1; // skip past the '@'
@@ -137,22 +137,25 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
     else if (strcmp(pcmd, "AcqROI") == 0)
       {
 	int enable_roi, min_x, min_y, size_x, size_y;
-	m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
-	m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
-	m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
-	m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
-	m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
-	snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-		 "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
-		 m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
+	if (req_type > 0)	// We are doing a set
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
+	    m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
+	    m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
+	    m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
+	    m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+		     "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
+		     m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
+	  }
+	else			// We are doing a get
+	  {
+	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<s>:Region?\r\n",
+		     m_sendCommandCounter++);
+	  }
       }
-    else if (strcmp(pcmd, "AcqROI_Q") == 0)
-      {
-	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-		 "#%d:getpv<s>:Region?\r\n",
-		 m_sendCommandCounter++);
-      }
-
+    
     ///
     fflush(stdout);
 
@@ -294,7 +297,7 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
     bool bSpecialCommand = false;  (void)bSpecialCommand; // SUC
     if (s_cmdName[0] == kSPECIALCHAR_FLAG) // TODO Add query support
     {
-        bSpecialCommand = _HandleSpecialCommands(s_cmdName);
+      bSpecialCommand = _HandleSpecialCommands(s_cmdName, cmdMatch);
         // ^ returns long string in m_privateBuffer
     }
     else if (cmdMatch < 0)		// We are doing a get

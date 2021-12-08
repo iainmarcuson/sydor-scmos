@@ -111,7 +111,7 @@ public:
 protected:
 	asynStatus writeWithReply(char *pstr);
   bool _FindMatchingPV( const char *cmd_num, char *cmdName);
-	bool _HandleSpecialCommands(const char *cmdName);
+  bool _HandleSpecialCommands(const char *cmdName, int req_type);
   int _FindMatchingCmd(const int cmd_num, char *cmdName, enum SD_Param_Type *data_type = NULL);
   bool _FindResponsePV(const char *cmd_str, int *pv_num); ///TODO Fix this and add functionality
   bool _FindSpecialResponse(const std::string &cmd_str);
