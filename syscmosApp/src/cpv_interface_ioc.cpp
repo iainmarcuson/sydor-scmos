@@ -146,6 +146,12 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName)
 		 "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
 		 m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
       }
+    else if (strcmp(pcmd, "AcqROI_Q") == 0)
+      {
+	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		 "#%d:getpv<s>:Region?\r\n",
+		 m_sendCommandCounter++);
+      }
 
     ///
     fflush(stdout);
@@ -608,6 +614,7 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
     else if (_FindSpecialResponse(pvname)) // Could be a special command
       {
 	ret = 1;		// A success, but we will not handle after return
+	/// TODO ICM -- Maybe break this out to a separate function
 	if (pvname == "Region")	// A region lookup
 	  {
 	    int enable_roi, min_x, min_y, size_x, size_y;
