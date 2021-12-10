@@ -632,3 +632,57 @@ field(TWST, "Capture")
 field(TWVL, "2")
 field(SCAN, "I/O Intr")
 }
+
+record(mbbo, "$(P)$(R)Binning")
+{
+field(DESC, "Binning Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_BINNING")
+field(ZRST, "1x1")
+field(ZRVL, "0")
+field(ONST, "2x2")
+field(ONVL, "1")
+field(TWST, "4x4")
+field(TWVL, "2")
+}
+
+record(mbbi, "$(P)$(R)Binning_RBV")
+{
+field(DESC, "Binning Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_BINNING")
+field(ZRST, "1x1")
+field(ZRVL, "0")
+field(ONST, "2x2")
+field(ONVL, "1")
+field(TWST, "4x4")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+record(mbbo, "$(P)$(R)GainMode")
+{
+field(DESC, "Gain Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GAIN_MODE")
+field(ZRST, "HDR")
+field(ZRVL, "0")
+field(ONST, "Std Hi")
+field(ONVL, "1")
+field(TWST, "Std Lo")
+field(TWVL, "2")
+}
+
+record(mbbi, "$(P)$(R)GainMode_RBV")
+{
+field(DESC, "Gain Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GAIN_MODE")
+field(ZRST, "HDR")
+field(ZRVL, "0")
+field(ONST, "Std Hi")
+field(ONVL, "1")
+field(TWST, "Std Lo")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
