@@ -23,4 +23,4 @@ $(P)$(R)SizeX, SIZE_X, i32, ADSizeX, ADSizeXString, 1, 1, "@AcqROI"
 $(P)$(R)SizeY, SIZE_Y, i32, ADSizeY, ADSizeYString, 1, 1, "@AcqROI"
 $(P)$(R)EnableRegion, SD_ENABLE_ROI, i32, SDEnableROI, SDEnableROIString, 0, 0, "@AcqROI"
 $(P)$(R)StartCapture, SD_START_CAPTURE, i32, SDStartCapture, SDStartCaptureString, 0, 0, "actionCapture"
-
+$(P)$(R)CaptureMode, SD_CAPTURE_MODE, i32, SDCaptureMode, SDCaptueModeString, 0, 1, "CaptureMode"
