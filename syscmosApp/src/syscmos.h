@@ -50,8 +50,8 @@ struct _structImageFrame
     int flag = 0;                     // lock count.
     bool        bMarkForDelete;
     uint32_t timeStamp;             // time acquired
-    uint16_t    nFrame=0;              // increments from 0 to nFramesPerSequence-1
-    uint16_t    nFramesPerSequence=0;  // constant over the sequence
+    uint32_t    nFrame=0;              // increments from 0 to nFramesPerSequence-1
+    uint32_t    nFramesPerSequence=0;  // constant over the sequence
 
     struct  _structTelemetry telemetry;
     int  meta1 = 0;     // rsvd special use.
