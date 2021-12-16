@@ -134,6 +134,42 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	printf("Select Run command string: %s\n", m_privateBuffer);
         bret = true;    
     }
+    else if (strcmp(pcmd, "COR_GEOCORRECT") == 0)
+      {
+	int enable_geo;
+	if (req_type > 0)	// Doing a set
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDGeoCorEn, &enable_geo);
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+		     "#%d:setpv<s>:setGeoCorrect:%i,\r\n", 
+		     m_sendCommandCounter++, enable_geo);
+	  }
+	else			// Doing a query
+	  {
+	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
+		     m_sendCommandCounter++);
+	  }
+      }
+    else if (strcmp(pcmd, "COR_ROTATE") == 0)
+      {
+	int enable_rotate;
+	double rotate_theta;
+	if (req_type > 0)	// Doing a set
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorRotEn, &enable_rotate);
+	    m_syscmos->getDoubleParam(m_syscmos->SDCorRotTheta, &rotate_theta);
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+		     "#%d:setpv<s>:setRotation:%i,%f\r\n", 
+		     m_sendCommandCounter++, enable_rotate, rotate_theta);
+	  }
+	else			// Doing a query
+	  {
+	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<s>:ds2c_Apply_Cor?ROTATE\r\n",
+		     m_sendCommandCounter++);
+	  }
+      }
     else if (strcmp(pcmd, "AcqROI") == 0)
       {
 	int enable_roi, min_x, min_y, size_x, size_y;
@@ -641,6 +677,14 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 bool CPV_Interface_IOC::_FindSpecialResponse(const std::string &cmd_str)
 {
   if (cmd_str == "Region")
+    {
+      return true;
+    }
+  if (cmd_str == "GeoCorrection") /// FIXME Need to find out what the strings are
+    {
+      return true;
+    }
+  if (cmd_str == "Rotate")
     {
       return true;
     }

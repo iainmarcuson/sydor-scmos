@@ -26,4 +26,6 @@ $(P)$(R)StartCapture, SD_START_CAPTURE, i32, SDStartCapture, SDStartCaptureStrin
 $(P)$(R)CaptureMode, SD_CAPTURE_MODE, i32, SDCaptureMode, SDCaptureModeString, 0, 1, "CaptureMode"
 $(P)$(R)Binning, SD_BINNING, i32, SDBinMode, SDBinModeString, 0, 1, "Resolution"
 $(P)$(R)GainMode, SD_GAIN_MODE, i32, SDGainMode, SDGainModeString, 0, 1, "Mode"
-
+$(P)$(R)CorGeo_En, SD_GEOCORRECT_EN, i32, SDGeoCorEn, SDGeoCorEnString, 0, 1, "@COR_GEOCORRECT"
+$(P)$(R)CorRot_En, SD_COR_ROT_EN, i32, SDCorRotEn, SDCorRotEnString, 0, 1, "@COR_ROTATE"
+$(P)$(R)CorRot_Theta, SD_COR_ROT_THETA, d, SDCorRotTheta, SDCorRotThetaString, 0, 0, "@COR_ROTATE"
