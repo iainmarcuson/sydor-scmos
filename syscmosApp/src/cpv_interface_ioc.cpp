@@ -149,6 +149,8 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
 		     m_sendCommandCounter++);
+	    ///DEBUGGING
+	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
 	  }
       }
     else if (strcmp(pcmd, "COR_ROTATE") == 0)
@@ -166,8 +168,10 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	else			// Doing a query
 	  {
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-		     "#%d:getpv<s>:ds2c_Apply_Cor?ROTATE\r\n",
+		     "#%d:getpv<d>:ds2c_Apply_Cor?ROTATE\r\n",
 		     m_sendCommandCounter++);
+	    ///DEBUGGING
+	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
 	  }
       }
     else if (strcmp(pcmd, "AcqROI") == 0)
@@ -383,6 +387,7 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
 int CPV_Interface_IOC::SetPV(const int pvNum, epicsFloat64 val)
 {
   int cmdMatch = _FindMatchingCmd(pvNum, /*out */ s_cmdName);
+  bool bSpecialCommand = false;
 
    
     // can decide HERE if PV is handled - or can forward to socket and look for ? response.
@@ -400,12 +405,18 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsFloat64 val)
       ///printf(" cmdName = %s \n", s_cmdName);
     }
 
-    /// TODO Handle return value and commands properly
-    //
-    // SEND Request to change
-    //
-    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-       "#%d:setpv<d>:%s:%f\r\n", m_sendCommandCounter++, s_cmdName, (double)val);
+    if (s_cmdName[0] == kSPECIALCHAR_FLAG)
+      {
+	bSpecialCommand = _HandleSpecialCommands(s_cmdName, cmdMatch);
+      }
+    else if (cmdMatch > 0)
+      {
+	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		 "#%d:setpv<d>:%s:%f\r\n", m_sendCommandCounter++, s_cmdName, (double)val);
+      }
+    else // A query ///TODO FIXME Handle this
+      {
+      }
     return writeWithReply(m_privateBuffer); 
     
 };
@@ -665,6 +676,15 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeX, size_x);
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeY, size_x);
 	  }
+	else if (pvname == "ds2c_Apply_Cor?ROTATE")
+	  {
+	    int enable_rot;
+	    double rot_theta;
+	    
+	    sscanf(strval.c_str(), " %i , %lf", &enable_rot, &rot_theta);
+	    m_syscmos->setIntegerParam(m_syscmos->SDCorRotEn, enable_rot);
+	    m_syscmos->setDoubleParam(m_syscmos->SDCorRotTheta, rot_theta);
+	  }
       }
 
     // TODO: create MapToDV( ADAcquireTimeString) - returns IntegTime
@@ -680,11 +700,19 @@ bool CPV_Interface_IOC::_FindSpecialResponse(const std::string &cmd_str)
     {
       return true;
     }
-  if (cmd_str == "GeoCorrection") /// FIXME Need to find out what the strings are
+  if (cmd_str == "setGeoCorrect") /// FIXME Need to find out what the strings are
     {
       return true;
     }
-  if (cmd_str == "Rotate")
+  if (cmd_str == "setRotation")
+    {
+      return true;
+    }
+  if (cmd_str == "ds2c_Apply_Cor?ROTATE")
+    {
+      return true;
+    }
+  if (cmd_str == "ds2c_ApplyCor?GEOCORRECTION")
     {
       return true;
     }

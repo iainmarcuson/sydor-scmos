@@ -606,7 +606,7 @@ field(VAL, "0")
 field(SCAN, "I/O Intr")
 }
 
-record(mmbo, "$(P)$(R)CaptureMode")
+record(mbbo, "$(P)$(R)CaptureMode")
 {
 field(DESC, "Caputre Mode")
 field(DTYP, "asynInt32")
@@ -619,7 +619,7 @@ field(TWST, "Capture")
 field(TWVL, "2")
 }
 
-record(mmbi, "$(P)$(R)CaptureMode_RBV")
+record(mbbi, "$(P)$(R)CaptureMode_RBV")
 {
 field(DESC, "Caputre Mode")
 field(DTYP, "asynInt32")
@@ -684,5 +684,51 @@ field(ONST, "Std Hi")
 field(ONVL, "1")
 field(TWST, "Std Lo")
 field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+########################
+# Correction PVs       #
+########################
+
+record (bo, "$(P)$(R)CorRot_En")
+{
+field(DESC, "Enable Rotation Correction")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ROT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorRot_En_RBV")
+{
+field(DESC, "Enable Rotation Correction")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ROT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+field(SCAN, "I/O Intr")
+}
+
+record (bo, "$(P)$(R)CorGeo_En")
+{
+field(DESC, "Enable Geocorrection")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GEOCORRECT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorGeo_En_RBV")
+{
+field(DESC, "Enable Geocorrection")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GEOCORRECT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
 field(SCAN, "I/O Intr")
 }

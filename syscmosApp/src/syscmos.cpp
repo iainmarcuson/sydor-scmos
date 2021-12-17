@@ -1576,9 +1576,11 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
   getParamName(0 /*int list*/, function, &pvName);
 
   ///XXX TODO ICM This may be more widely applicable than currently implemented
+  ///FIXME TODO Look up command string and set all handled specially
   if ((function == ADMinX) || (function == ADMinY)
       || (function == ADSizeX) || (function == ADSizeY)
-      || (function == SDEnableROI)) // Special handling for these
+      || (function == SDEnableROI) 
+      || (function == SDCorRotEn) || (function == SDGeoCorEn)) // Special handling for these
     {
       setIntegerParam(function, value);
     }
@@ -1673,6 +1675,12 @@ asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
   const char *pvName = NULL;
 
   getParamName(0 /*int list*/, function, &pvName);
+
+  if (function == SDCorRotTheta)
+    {
+      setDoubleParam(function, value);
+    }
+  
   int ret = m_cpv_interface->SetPV(function, value);
 
   if (0 == ret)
