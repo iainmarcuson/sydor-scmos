@@ -687,6 +687,122 @@ field(TWVL, "2")
 field(SCAN, "I/O Intr")
 }
 
+record(mbbo, "$(P)$(R)CaptureMode")
+{
+field(DESC, "Capture Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CAPTURE_MODE")
+field(ZRST, "Live")
+field(ZRVL, "0")
+field(ONST, "Capture to RAM")
+field(ONVL, "1")
+field(TWST, "Capture to Disk")
+field(TWVL, "2")
+}
+
+record(mbbi, "$(P)$(R)CaptureMode_RBV")
+{
+field(DESC, "Gain Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CAPTURE_MODE")
+field(ZRST, "Live")
+field(ZRVL, "0")
+field(ONST, "Capture to RAM")
+field(ONVL, "1")
+field(TWST, "Capture to Disk")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+########################
+# Trigger Options
+########################
+
+record(mbbo, "$(P)$(R)InTrigEdge")
+{
+field(DESC, "Input Trigger Edge")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_IN_TRIG_EDGE")
+field(ZRST, "Falling")
+field(ZRVL, "0")
+field(ONST, "Rising")
+field(ONVL, "1")
+}
+
+record(mbbi, "$(P)$(R)InTrigEdge_RBV")
+{
+field(DESC, "Input Trigger Edge")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_IN_TRIG_EDGE")
+field(ZRST, "Falling")
+field(ZRVL, "0")
+field(ONST, "Rising")
+field(ONVL, "1")
+field(SCAN, "I/O Intr")
+}
+
+
+record(mbbo, "$(P)$(R)OutTrigEdge")
+{
+field(DESC, "Output Trigger Edge")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_TRIG_EDGE")
+field(ZRST, "Falling")
+field(ZRVL, "0")
+field(ONST, "Rising")
+field(ONVL, "1")
+}
+
+record(mbbi, "$(P)$(R)OutTrigEdge_RBV")
+{
+field(DESC, "Output Trigger Edge")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_TRIG_EDGE")
+field(ZRST, "Falling")
+field(ZRVL, "0")
+field(ONST, "Rising")
+field(ONVL, "1")
+field(SCAN, "I/O Intr")
+}
+
+
+record(mbbo, "$(P)$(R)OutTrigMode")
+{
+field(DESC, "Output Trigger Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_TRIG_MODE")
+field(ZRST, "Exposure Start")
+field(ZRVL, "0")
+field(ONST, "Readout End")
+field(ONVL, "1")
+field(TWST, "Global Exposure")
+field(TWVL, "2")
+field(THST, "Low")
+field(THVL, "3")
+field(FRST, "High")
+field(FRVL, "4")
+}
+
+record(mbbi, "$(P)$(R)OutTrigMode_RBV")
+{
+field(DESC, "Output Trigger Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_OUT_TRIG_MODE")
+field(ZRST, "Exposure Start")
+field(ZRVL, "0")
+field(ONST, "Readout End")
+field(ONVL, "1")
+field(TWST, "Global Exposure")
+field(TWVL, "2")
+field(THST, "Low")
+field(THVL, "3")
+field(FRST, "High")
+field(FRVL, "4")
+field(SCAN, "I/O Intr")
+}
+
+
+
 ########################
 # Correction PVs       #
 ########################

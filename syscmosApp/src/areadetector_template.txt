@@ -29,3 +29,7 @@ $(P)$(R)GainMode, SD_GAIN_MODE, i32, SDGainMode, SDGainModeString, 0, 1, "Mode"
 $(P)$(R)CorGeo_En, SD_GEOCORRECT_EN, i32, SDGeoCorEn, SDGeoCorEnString, 0, 1, "@COR_GEOCORRECT"
 $(P)$(R)CorRot_En, SD_COR_ROT_EN, i32, SDCorRotEn, SDCorRotEnString, 0, 1, "@COR_ROTATE"
 $(P)$(R)CorRot_Theta, SD_COR_ROT_THETA, d, SDCorRotTheta, SDCorRotThetaString, 0, 0, "@COR_ROTATE"
+$(P)$(R)InTrigEdge, SD_IN_TRIG_EDGE, i32, SDInTrigEdge, SDInTrigEdgeString, 0, 1, "InputTriggerEdge"
+$(P)$(R)OutTrigEdge, SD_OUT_TRIG_EDGE, i32, SDOutTrigEdge, SDOutTrigEdgeString, 0, 1, "OutputEdge"
+$(P)$(R)OutTrigMode, SD_OUT_TRIG_MODE, i32, SDOutTrigMode, SDOutTrigModeString, 0, 1, "OutputTrigger"
+
