@@ -32,4 +32,4 @@ $(P)$(R)CorRot_Theta, SD_COR_ROT_THETA, d, SDCorRotTheta, SDCorRotThetaString, 0
 $(P)$(R)InTrigEdge, SD_IN_TRIG_EDGE, i32, SDInTrigEdge, SDInTrigEdgeString, 0, 1, "InputTriggerEdge"
 $(P)$(R)OutTrigEdge, SD_OUT_TRIG_EDGE, i32, SDOutTrigEdge, SDOutTrigEdgeString, 0, 1, "OutputEdge"
 $(P)$(R)OutTrigMode, SD_OUT_TRIG_MODE, i32, SDOutTrigMode, SDOutTrigModeString, 0, 1, "OutputTrigger"
-
+$(P)$(R)GUIRefresh, SD_GUI_REFRESH, i32, SDGUIRefresh, SDGUIRefreshString, 0, 0, "*"
