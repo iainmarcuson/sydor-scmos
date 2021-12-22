@@ -660,6 +660,30 @@ field(TWVL, "2")
 field(SCAN, "I/O Intr")
 }
 
+record(mbbo, "$(P)$(R)AccumulateMode")
+{
+field(DESC, "Accumulate Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ACCUMULATE_MODE")
+field(ZRST, "Disabled")
+field(ZRVL, "0")
+field(ONST, "Enabled")
+field(ONVL, "1")
+}
+
+record(mbbi, "$(P)$(R)AccumulateMode_RBV")
+{
+field(DESC, "Accumulate Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ACCUMULATE_MODE")
+field(ZRST, "Disabled")
+field(ZRVL, "0")
+field(ONST, "Enabled")
+field(ONVL, "1")
+field(SCAN, "I/O Intr")
+}
+
+
 record(mbbo, "$(P)$(R)GainMode")
 {
 field(DESC, "Gain Mode")

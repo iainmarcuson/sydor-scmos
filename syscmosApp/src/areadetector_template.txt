@@ -33,3 +33,5 @@ $(P)$(R)InTrigEdge, SD_IN_TRIG_EDGE, i32, SDInTrigEdge, SDInTrigEdgeString, 0, 1
 $(P)$(R)OutTrigEdge, SD_OUT_TRIG_EDGE, i32, SDOutTrigEdge, SDOutTrigEdgeString, 0, 1, "OutputEdge"
 $(P)$(R)OutTrigMode, SD_OUT_TRIG_MODE, i32, SDOutTrigMode, SDOutTrigModeString, 0, 1, "OutputTrigger"
 $(P)$(R)GUIRefresh, SD_GUI_REFRESH, i32, SDGUIRefresh, SDGUIRefreshString, 0, 0, "*"
+$(P)$(R)Temperature, TEMPERATURE, d, ADTemperature, ADTemperatureString, 1, 1, "Temperature"
+$(P)$(R)AccumulateMode, SD_ACCUMULATE_MODE, i32, SDAccumulateMode, SDAccumulateModeString, 0, 1, "AccumulateMode"
