@@ -675,7 +675,7 @@ record(mbbi, "$(P)$(R)AccumulateMode_RBV")
 {
 field(DESC, "Accumulate Mode")
 field(DTYP, "asynInt32")
-field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ACCUMULATE_MODE")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ACCUMULATE_MODE")
 field(ZRST, "Disabled")
 field(ZRVL, "0")
 field(ONST, "Enabled")
