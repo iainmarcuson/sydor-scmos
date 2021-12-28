@@ -944,7 +944,9 @@ void syscmos::acquisitionTask()
   FILE *img_file;
 
   ///Initialize Image FILE
-  img_file = fopen("raw_img.dat", "w"); // YF WTF is this?
+  ///img_file = fopen("raw_img.dat", "w"); // YF WTF is this?
+  ///FIXME Remove this
+  img_file = NULL;
 
   static const char *functionName = "acquisitionTask";
   this->lock();
@@ -988,13 +990,14 @@ void syscmos::acquisitionTask()
         ///printf("Starting new acq cycle.\n");
         ///status = pasynOctetSyncIO->writeRead(pasynDataMeter_, dataOutString_, strlen(dataOutString_), (char *)&doc_data,
         ///				     sizeof(doc_data), 600.5, &nwrite, &nread, &eomReason);  //Timeout is 1.5 seconds, appropriate for 1 second send interval
-        status = pasynOctetSyncIO->read(pasynDataMeter_, (char *)&doc_data, sizeof(doc_data), 600.5, &nread, &eomReason); ///Reduced timeout from 600.5 to 10.5
+        status = pasynOctetSyncIO->read(pasynDataMeter_, (char *)&doc_data, sizeof(doc_data), 1.5, &nread, &eomReason); ///Reduced timeout from 600.5 to 10.5
         printf("Received %li of %li bytes for doc_data.\n", nread, nread_expect);
         fflush(stdout);
         ///TODO May want to do proper timeout checking
         if (nread != nread_expect) // Failed to get proper header bytes
         {
           miss_count_hdr++;
+	  pasynOctetSyncIO->flush(pasynDataMeter_);
 	  goto acq_loop_head_; /// Really try again; delete below line if this works
           continue; // Try again
         }
