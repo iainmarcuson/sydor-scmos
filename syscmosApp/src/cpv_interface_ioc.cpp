@@ -204,9 +204,34 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	  {
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubEn, &overscan_enable);
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubAmt, &overscan_amt);
+	    ///XXX Override since value is dummied out currently
+	    overscan_amt = 0;
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
 		     "#%d:setpv<s>:setOverscanSubtract:%i,%i\r\n",
 		     m_sendCommandCounter++, overscan_enable, overscan_amt);
+	  }
+	else			// Doing a get
+	  {
+	    /// XXX TODO FIXME No get command yet, so do a GUI Refresh
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<s>:*:0\r\n",
+		     m_sendCommandCounter++);
+	  }
+      }
+    else if (strcmp(pcmd, "COR_ASSEMBLE") == 0)
+      {
+	int assemble_enable;
+	int assemble_arg;
+
+	if (req_type > 0) // Setting parameters
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorAssembleEn, &assemble_enable);
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorAssembleArg, &assemble_arg);
+	    ///XXX Override since value is dummied out currently
+	    assemble_arg = 0;
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
+		     "#%d:setpv<s>:setAssemble:%i,%i\r\n",
+		     m_sendCommandCounter++, assemble_enable, assemble_arg);
 	  }
 	else			// Doing a get
 	  {

@@ -39,3 +39,6 @@ $(P)$(R)ReadoutMode, SD_READOUT_MODE, i32, SDReadoutMode, SDReadoutModeString, 0
 #The overscan subtraction takes two arguments, but one of them is dummied out
 $(P)$(R)CorOverscanSubEn, SD_COR_OVER_EN, i32, SDCorOverscanSubEn, SDOverscanSubEnString, 0, 1, "@COR_OVERSCAN"
 $(P)$(R)CorOverscanSubAmt, SD_COR_OVER_AMT, i32, SDCorOverscanSubAmt, SDOverscanSubAmtString, 0, 0, "@COR_OVERSCAN"
+#The image assembly takes two arguments, but one of them is dummied out
+$(P)$(R)CorAssembleEn, SD_COR_ASSEMBLE_EN, i32, SDCorAssembleEn, SDCorAssembleEnString, 0, 1, "@COR_ASSEMBLE"
+$(P)$(R)CorAssembleArg, SD_COR_ASSEMBLE_ARG, i32, SDCorAssembleArg, SDCorAssembleArgString, 0, 0, "@COR_ASSEMBLE"

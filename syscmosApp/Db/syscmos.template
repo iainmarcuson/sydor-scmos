@@ -928,3 +928,27 @@ field(ZNAM, "Disable")
 field(ONAM, "Enable")
 field(SCAN, "I/O Intr")
 }
+
+#############################
+# Image Assembly Correction #
+#############################
+
+record (bo, "$(P)$(R)CorAssembleEn")
+{
+field(DESC, "Enable Image Assembly")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ASSEMBLE_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorAssembleEn_RBV")
+{
+field(DESC, "Enable Image Assembly")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ASSEMBLE_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
