@@ -872,3 +872,59 @@ field(ONAM, "Enable")
 field(VAL, "0")
 field(SCAN, "I/O Intr")
 }
+
+#######################
+# Readout Mode
+#######################
+
+record(mbbo, "$(P)$(R)ReadoutMode")
+{
+field(DESC, "Readout Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READOUT_MODE")
+field(ZRST, "Double")
+field(ZRVL, "0")
+field(ONST, "Interleaved")
+field(ONVL, "1")
+field(TWST, "Uni-directional")
+field(TWVL, "2")
+field(VAL, "1")
+}
+
+record(mbbi, "$(P)$(R)ReadoutMode_RBV")
+{
+field(DESC, "Readout Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READOUT_MODE")
+field(ZRST, "Double")
+field(ZRVL, "0")
+field(ONST, "Interleaved")
+field(ONVL, "1")
+field(TWST, "Uni-directional")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+###################################
+# Overscan Subtraction Correction #
+###################################
+
+record (bo, "$(P)$(R)CorOverscanSubEn")
+{
+field(DESC, "Enable Overscan Subtraction")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_OVER_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorOverscanSubEn_RBV")
+{
+field(DESC, "Enable Overscan Subraction")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_OVER_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}

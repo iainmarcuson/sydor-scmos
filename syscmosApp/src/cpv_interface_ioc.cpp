@@ -195,6 +195,27 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 		     m_sendCommandCounter++);
 	  }
       }
+    else if (strcmp(pcmd, "COR_OVERSCAN") == 0)
+      {
+	int overscan_enable;
+	int overscan_amt;
+
+	if (req_type > 0) // Setting parameters
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubEn, &overscan_enable);
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubAmt, &overscan_amt);
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
+		     "#%d:setpv<s>:setOverscanSubtract:%i,%i\r\n",
+		     m_sendCommandCounter++, overscan_enable, overscan_amt);
+	  }
+	else			// Doing a get
+	  {
+	    /// XXX TODO FIXME No get command yet, so do a GUI Refresh
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<s>:*:0\r\n",
+		     m_sendCommandCounter++);
+	  }
+      }
     
     ///
     fflush(stdout);

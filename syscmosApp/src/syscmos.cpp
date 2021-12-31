@@ -1583,7 +1583,8 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
   if ((function == ADMinX) || (function == ADMinY)
       || (function == ADSizeX) || (function == ADSizeY)
       || (function == SDEnableROI) 
-      || (function == SDCorRotEn) || (function == SDGeoCorEn)) // Special handling for these
+      || (function == SDCorRotEn) || (function == SDGeoCorEn)
+      || (function == SDCorOverscanSubEn) || (function == SDCorOverscanSubAmt)) // Special handling for these
     {
       setIntegerParam(function, value);
     }
