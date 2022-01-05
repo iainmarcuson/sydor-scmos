@@ -5,7 +5,7 @@
 $(P)$(R)AcquireTime, ACQ_TIME, d, ADAcquireTime, ADAcquireTimeString, 1, 1, "IntegTime"
 $(P)$(R)TriggerMode, TRIGGER_MODE, i32, ADTriggerMode, ADTriggerModeString, 1, 1, "Trigger"
 $(P)$(R)NumImages, NIMAGES, i32, ADNumImages, ADNumImagesString, 1, 1, "NImages"
-$(P)$(R)ShutterControl, SHUTTER_CONTROL, i32, ADShutterControl, ADShutterControlString, 1, 1, "Shutter"
+$(P)$(R)ShutterMode, SHUTTER_MODE, i32, ADShutterMode, ADShutterModeString, 1, 1, "Shutter"
 $(P)$(R)InterframeTime, SD_INTERFRAME_TIME, d, SDInterframeTime, SDInterframeTimeString, 0, 0, "Interframe"
 $(P)$(R)NumFrames, SD_NUM_FRAMES, i32, SDNumFrames, SDNumFramesString, 0, 0, "NFrames"
 $(P)$(R)SensorPower, SD_SENSOR_POWER, i32, SDSensorPower, SDSensorPowerString, 0, 1, ""

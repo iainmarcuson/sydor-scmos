@@ -952,3 +952,35 @@ field(ZNAM, "Disable")
 field(ONAM, "Enable")
 field(SCAN, "I/O Intr")
 }
+
+#######################
+# Shutter Mode
+#######################
+
+record(mbbo, "$(P)$(R)ShutterMode")
+{
+field(DESC, "Shutter Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
+field(ZRST, "Normal")
+field(ZRVL, "0")
+field(ONST, "Force Open")
+field(ONVL, "1")
+field(TWST, "Force Closed")
+field(TWVL, "2")
+field(VAL, "0")
+}
+
+record(mbbi, "$(P)$(R)ShutterMode_RBV")
+{
+field(DESC, "Shutter Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
+field(ZRST, "Normal")
+field(ZRVL, "0")
+field(ONST, "Force Open")
+field(ONVL, "1")
+field(TWST, "Force Closed")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
