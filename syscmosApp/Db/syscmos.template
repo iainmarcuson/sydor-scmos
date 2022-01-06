@@ -831,7 +831,7 @@ field(SCAN, "I/O Intr")
 # Correction PVs       #
 ########################
 
-record (bo, "$(P)$(R)CorRot_En")
+record (bo, "$(P)$(R)CorRotEn")
 {
 field(DESC, "Enable Rotation Correction")
 field(DTYP, "asynInt32")
@@ -841,7 +841,7 @@ field(ONAM, "Enable")
 field(VAL, "0")
 }
 
-record (bi, "$(P)$(R)CorRot_En_RBV")
+record (bi, "$(P)$(R)CorRotEn_RBV")
 {
 field(DESC, "Enable Rotation Correction")
 field(DTYP, "asynInt32")
@@ -852,7 +852,7 @@ field(VAL, "0")
 field(SCAN, "I/O Intr")
 }
 
-record (bo, "$(P)$(R)CorGeo_En")
+record (bo, "$(P)$(R)CorGeoEn")
 {
 field(DESC, "Enable Geocorrection")
 field(DTYP, "asynInt32")
@@ -862,7 +862,7 @@ field(ONAM, "Enable")
 field(VAL, "0")
 }
 
-record (bi, "$(P)$(R)CorGeo_En_RBV")
+record (bi, "$(P)$(R)CorGeoEn_RBV")
 {
 field(DESC, "Enable Geocorrection")
 field(DTYP, "asynInt32")
