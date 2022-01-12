@@ -42,3 +42,7 @@ $(P)$(R)CorOverscanSubAmt, SD_COR_OVER_AMT, i32, SDCorOverscanSubAmt, SDOverscan
 #The image assembly takes two arguments, but one of them is dummied out
 $(P)$(R)CorAssembleEn, SD_COR_ASSEMBLE_EN, i32, SDCorAssembleEn, SDCorAssembleEnString, 0, 1, "@COR_ASSEMBLE"
 $(P)$(R)CorAssembleArg, SD_COR_ASSEMBLE_ARG, i32, SDCorAssembleArg, SDCorAssembleArgString, 0, 0, "@COR_ASSEMBLE"
+$(P)$(R)VideoMode, SD_VID_MODE, i32, SDVideoMode, SDVideoModeString, 0, 1, "Video"
+$(P)$(R)CBAMode, SD_CBA_MODE, i32, SDCBAMode, SDCBAModeString, 0, 1, "ClearBeforeAcquire"
+$(P)$(R)CorHPREn, SD_COR_HPR_EN, i32, SDCorHPREn, SDCorHPREnString, 0, 1, "@COR_HPR"
+$(P)$(R)CorHPRRatio, SD_COR_HPR_RATIO, d, SDCorHPRRatio, SDCorHPRRatioString, 0, 0, "@COR_HPR"

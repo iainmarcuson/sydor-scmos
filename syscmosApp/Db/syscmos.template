@@ -79,14 +79,10 @@ record(mbbo, "$(P)$(R)TriggerMode")
 {
 field(PINI, "YES")
 field(VAL, "0")
-field(ZRVL, "4")
-field(ZRST, "Software")
+field(ZRVL, "0")
+field(ZRST, "Internal")
 field(ONVL, "1")
-field(ONST, "Standard")
-field(TWVL, "2")
-field(TWST, "Synchronous")
-field(THVL, "3")
-field(THST, "Global")
+field(ONST, "External")
 field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
@@ -982,5 +978,81 @@ field(ONST, "Force Open")
 field(ONVL, "1")
 field(TWST, "Force Closed")
 field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+
+
+########################
+# Video Mode PVs       #
+########################
+
+record (bo, "$(P)$(R)VideoMode")
+{
+field(DESC, "Enable Video Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_VID_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)VideoMode_RBV")
+{
+field(DESC, "Enable Video Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_VID_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+################################
+# Clear Before Acquire Mode
+################################
+
+
+record (bo, "$(P)$(R)CBAMode")
+{
+field(DESC, "Enable CBA Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CBA_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CBAMode_RBV")
+{
+field(DESC, "Enable CBA Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CBA_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+################################
+# Clear Before Acquire Mode
+################################
+
+
+record (bo, "$(P)$(R)CorHPREn")
+{
+field(DESC, "Enable Hot Pixel Removal")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_HPR_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorHPREn_RBV")
+{
+field(DESC, "Enable Hot Pixel Removal")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_HPR_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
 field(SCAN, "I/O Intr")
 }

@@ -1585,7 +1585,8 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
       || (function == SDEnableROI) 
       || (function == SDCorRotEn) || (function == SDGeoCorEn)
       || (function == SDCorOverscanSubEn) || (function == SDCorOverscanSubAmt)
-      || (function == SDCorAssembleEn) || (function == SDCorAssembleArg)) // Special handling for these
+      || (function == SDCorAssembleEn) || (function == SDCorAssembleArg)
+      || (function == SDCorHPREn)) // Special handling for these
     {
       setIntegerParam(function, value);
     }
@@ -1681,7 +1682,7 @@ asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 
   getParamName(0 /*int list*/, function, &pvName);
 
-  if (function == SDCorRotTheta)
+  if ((function == SDCorRotTheta) || (function == SDCorHPRRatio))
     {
       setDoubleParam(function, value);
     }

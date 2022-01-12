@@ -174,6 +174,27 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
 	  }
       }
+    else if (strcmp(pcmd, "COR_HPR") == 0) // Hot Pixel Removal
+      {
+	int enable_hpr;
+	double hpr_ratio;
+	if (req_type > 0)	// Doing a set
+	  {
+	    m_syscmos->getIntegerParam(m_syscmos->SDCorHPREn, &enable_hpr);
+	    m_syscmos->getDoubleParam(m_syscmos->SDCorHPRRatio, &hpr_ratio);
+	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+		     "#%d:setpv<s>:setHotPixel:%i,%f\r\n", 
+		     m_sendCommandCounter++, enable_hpr, hpr_ratio);
+	  }
+	else			// Doing a query
+	  {
+	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+		     "#%d:getpv<d>:ds2c_Apply_Cor?HPR\r\n",
+		     m_sendCommandCounter++);
+	    ///DEBUGGING
+	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
+	  }
+      }
     else if (strcmp(pcmd, "AcqROI") == 0)
       {
 	int enable_roi, min_x, min_y, size_x, size_y;
