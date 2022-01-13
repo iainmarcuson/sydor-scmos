@@ -46,3 +46,4 @@ $(P)$(R)VideoMode, SD_VID_MODE, i32, SDVideoMode, SDVideoModeString, 0, 1, "Vide
 $(P)$(R)CBAMode, SD_CBA_MODE, i32, SDCBAMode, SDCBAModeString, 0, 1, "ClearBeforeAcquire"
 $(P)$(R)CorHPREn, SD_COR_HPR_EN, i32, SDCorHPREn, SDCorHPREnString, 0, 1, "@COR_HPR"
 $(P)$(R)CorHPRRatio, SD_COR_HPR_RATIO, d, SDCorHPRRatio, SDCorHPRRatioString, 0, 0, "@COR_HPR"
+$(P)$(R)ImageMode, IMAGE_MODE, i32, ADImageMode, ADImageModeString, 1, 1, "AcquireMode"

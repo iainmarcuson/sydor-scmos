@@ -1056,3 +1056,20 @@ field(ZNAM, "Disable")
 field(ONAM, "Enable")
 field(SCAN, "I/O Intr")
 }
+
+##########################
+# Image Mode Overrides   #
+##########################
+
+record(mbbo, "$(P)$(R)ImageMode")
+{
+field(TWVL, "2")
+field(TWST, "Continuous")
+}
+
+record(mbbi, "$(P)$(R)ImageModeRBV")
+{
+field(TWVL, "2")
+field(TWST, "Continuous")
+}
+
