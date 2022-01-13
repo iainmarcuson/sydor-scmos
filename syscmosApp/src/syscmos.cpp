@@ -1570,6 +1570,7 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
   */
   
   const char *pvName = NULL;
+  char cmd_string[256]; // Hopefully long enough.  Holds the command string to test for special characters
 
   if (function == SDOutMux)
     {
@@ -1580,17 +1581,13 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
   ///XXX TODO ICM This may be more widely applicable than currently implemented
   ///FIXME TODO Look up command string and set all handled specially
-  if ((function == ADMinX) || (function == ADMinY)
-      || (function == ADSizeX) || (function == ADSizeY)
-      || (function == SDEnableROI) 
-      || (function == SDCorRotEn) || (function == SDGeoCorEn)
-      || (function == SDCorOverscanSubEn) || (function == SDCorOverscanSubAmt)
-      || (function == SDCorAssembleEn) || (function == SDCorAssembleArg)
-      || (function == SDCorHPREn)) // Special handling for these
+
+  m_cpv_interface->_FindMatchingCmd(function, cmd_string);
+  if (cmd_string[0] == '@') // A special function
     {
       setIntegerParam(function, value);
     }
-  
+    
   int ret = m_cpv_interface->SetPV(function, value);
 
   printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",
@@ -1670,6 +1667,7 @@ void *memset(void *ptr, int value, size_t num);
 asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 {
   static char wf64Buffer[128]; // YF
+  char cmd_string[256]; // Used to look up special function.  XXX Hopefully large enough.
 
   // probably a good idea to clear out the buffer each time
   memset(wf64Buffer, 0, 128);
@@ -1682,7 +1680,8 @@ asynStatus syscmos::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 
   getParamName(0 /*int list*/, function, &pvName);
 
-  if ((function == SDCorRotTheta) || (function == SDCorHPRRatio))
+  m_cpv_interface->_FindMatchingCmd(function, cmd_string);
+  if (cmd_string[0] == '@') // A special function TODO Make @ a named constant for ::writeInt32 as well
     {
       setDoubleParam(function, value);
     }

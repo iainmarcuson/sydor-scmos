@@ -104,15 +104,14 @@ public:
 	int SetPV(const int pvNum, const char *pval);
   int GetPV(const char *cmdName, int paramNum);
 	int ParseResponse(const char *strResponse, int *nFunction, PRType *prt);
-
+  int _FindMatchingCmd(const int cmd_num, char *cmdName, enum SD_Param_Type *data_type = NULL);  
 public:
 	epicsEventId cmdEventId;
 
 protected:
 	asynStatus writeWithReply(char *pstr);
-  bool _FindMatchingPV( const char *cmd_num, char *cmdName);
   bool _HandleSpecialCommands(const char *cmdName, int req_type);
-  int _FindMatchingCmd(const int cmd_num, char *cmdName, enum SD_Param_Type *data_type = NULL);
+  bool _FindMatchingPV( const char *cmd_num, char *cmdName); // Public to see if a function is special
   bool _FindResponsePV(const char *cmd_str, int *pv_num); ///TODO Fix this and add functionality
   bool _FindSpecialResponse(const std::string &cmd_str);
 protected:
