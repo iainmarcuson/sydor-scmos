@@ -80,24 +80,18 @@ record(mbbo, "$(P)$(R)TriggerMode")
 field(PINI, "YES")
 field(VAL, "0")
 field(ZRVL, "0")
-field(ZRST, "Internal")
+field(ZRST, "Software")
 field(ONVL, "1")
-field(ONST, "External")
+field(ONST, "Hardware")
 field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
 record(mbbi, "$(P)$(R)TriggerMode_RBV")
 {
-field(PINI, "YES")
-field(VAL, "0")
-field(ZRVL, "4")
+field(ZRVL, "0")
 field(ZRST, "Software")
 field(ONVL, "1")
-field(ONST, "Standard")
-field(TWVL, "2")
-field(TWST, "Synchronous")
-field(THVL, "3")
-field(THST, "Global")
+field(ONST, "Hardware")
 field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
@@ -224,8 +218,8 @@ record (bo, "$(P)$(R)SensorPower")
     field (DESC, "Sensor Power")
     field (DTYP, "asynInt32")
     field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENSOR_POWER")
-    field (ZNAM, "Disable")
-    field (ONAM, "Enable")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
     field (VAL,  "0")
     #field (PINI, "YES")
 }
@@ -239,6 +233,66 @@ field (ONAM, "Enable")
 field (VAL,  "0")
 field(SCAN, "I/O Intr")
 }
+
+#-----------------
+# Sensor Bias
+#-----------------
+
+record(mbbo, "$(P)$(R)BiasRoute")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Float")
+field(ONVL, "1")
+field(ONST, "ON")
+field(TWVL, "2")
+field(TWST, "Shunt")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
+}
+
+record(mbbi, "$(P)$(R)BiasRoute_RBV")
+{
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Float")
+field(ONVL, "1")
+field(ONST, "ON")
+field(TWVL, "2")
+field(TWST, "Shunt")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
+}
+
+
+#----------------------------------
+# Sensor Power
+#----------------------------------
+record (bo, "$(P)$(R)SensorBias")
+{
+    field (DESC, "Sensor Bias")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENS_BIAS")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
+    field (VAL,  "0")
+}
+
+record(bi, "$(P)$(R)SensorBias_RBV")
+{
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENS_BIAS")
+field (ZNAM, "Off")
+field (ONAM, "On")
+field (VAL,  "0")
+field(SCAN, "I/O Intr")
+}
+
+#---------------------------
+# Bias Routing
+#---------------------------
+
 
 
 ###################################################################
@@ -958,13 +1012,10 @@ record(mbbo, "$(P)$(R)ShutterMode")
 field(DESC, "Shutter Mode")
 field(DTYP, "asynInt32")
 field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
-field(ZRST, "Normal")
+field(ZRST, "Close")
 field(ZRVL, "0")
-field(ONST, "Force Open")
+field(ONST, "Open")
 field(ONVL, "1")
-field(TWST, "Force Closed")
-field(TWVL, "2")
-field(VAL, "0")
 }
 
 record(mbbi, "$(P)$(R)ShutterMode_RBV")
@@ -972,12 +1023,10 @@ record(mbbi, "$(P)$(R)ShutterMode_RBV")
 field(DESC, "Shutter Mode")
 field(DTYP, "asynInt32")
 field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
-field(ZRST, "Normal")
+field(ZRST, "Close")
 field(ZRVL, "0")
-field(ONST, "Force Open")
+field(ONST, "Open")
 field(ONVL, "1")
-field(TWST, "Force Closed")
-field(TWVL, "2")
 field(SCAN, "I/O Intr")
 }
 
