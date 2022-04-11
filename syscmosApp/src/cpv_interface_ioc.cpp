@@ -113,6 +113,9 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
             "#%d:setpv<s>:actionStartRun:{setName\\:%s,description\\:%s,runName\\:%s}\r\n", 
             m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );                
 
+        //-=-= DEBUGGING
+        printf("Take picture command string: %s\n", m_privateBuffer);
+        
         bret = true;    
     }
     else if (strcmp(pcmd, "SPECIAL_SELECT_RUN") == 0)
@@ -513,10 +516,21 @@ int CPV_Interface_IOC::SetPV(const int pvNum, const char *pval)
 
     // SEND Request to change
     //
+  // Test to see if we should send
+  if (s_cmdName[0] = '^')       // Inhibit Send prefix
+  {
+      // Set the parameter for readback, then return success
+      //-=-= DEBUGGING
+      printf("Inhibited Command String: %s\nParam Index %i\nNew Value: %s\n", s_cmdName, pvNum, pval);
+      m_syscmos->setStringParam(pvNum, pval);
+      return 0;
+  }
+  else
+  {
     snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
        "#%d:setpv<d>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
     return writeWithReply(m_privateBuffer); 
-
+  }
      
 };
 

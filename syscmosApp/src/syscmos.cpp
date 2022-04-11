@@ -1496,6 +1496,10 @@ asynStatus syscmos::writeOctet(asynUser *pasynUser, const char *value,
   getParamName(0 /*int list*/, function, &pvName);
   int ret = m_cpv_interface->SetPV(function, value);
 
+  //-=-=DEBUGGING
+  //status = setStringParam(function, (char *) value);
+  //printf("setStringParam status: %i\n", status);
+  
   if (0 == ret)
   {
     // was handled by interface - nothing to do here.
