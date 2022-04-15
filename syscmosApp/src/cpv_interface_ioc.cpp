@@ -39,6 +39,7 @@
 #include <iostream>
 
 #include <vector>
+#include <cstdint>
 
 //extern epicsMutex *plock_ControlPortIO;
 #define kSizeOfCmdName 32
@@ -105,13 +106,13 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 
 	/// DataViewer appears to show "description" as the magical phrase for the set description in the setings
 	/*
-        snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:actionStartRun:{setName\\:%s,setDescription\\:%s,runName\\:%s}\r\n", 
-            m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );
+          snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+          "#%d:setpv<s>:actionStartRun:{setName\\:%s,setDescription\\:%s,runName\\:%s}\r\n", 
+          m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );
 	*/                
 	snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:actionStartRun:{setName\\:%s,description\\:%s,runName\\:%s}\r\n", 
-            m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );                
+                 "#%d:setpv<s>:actionStartRun:{setName\\:%s,description\\:%s,runName\\:%s}\r\n", 
+                 m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );                
 
         //-=-= DEBUGGING
         printf("Take picture command string: %s\n", m_privateBuffer);
@@ -119,7 +120,7 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
         bret = true;    
     }
     else if (strcmp(pcmd, "SPECIAL_SELECT_RUN") == 0)
-      {
+    {
 	std::string runName, setName, setDescription;
 	int mode = 1;		// TODO Allow background frames
 	int b_avg = 0;		// TODO Presumable for averaging BG frames
@@ -131,78 +132,78 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
         m_syscmos->getIntegerParam(m_syscmos->SDLoadNumFrames, &num_frames);
 
         snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:q2c_SelectRunItem:{mode\\:%i,setName\\:%s,setDescription\\:%s,runName\\:%s,NFrames\\:%i,bAverage\\:%i,bCallFetchAverage\\:%i}\r\n", 
+                 "#%d:setpv<s>:q2c_SelectRunItem:{mode\\:%i,setName\\:%s,setDescription\\:%s,runName\\:%s,NFrames\\:%i,bAverage\\:%i,bCallFetchAverage\\:%i}\r\n", 
 		 m_sendCommandCounter++, mode, setName.c_str(), setDescription.c_str(), runName.c_str(), num_frames, b_avg, b_call_fetch_avg);                
 	///
 	printf("Select Run command string: %s\n", m_privateBuffer);
         bret = true;    
     }
     else if (strcmp(pcmd, "COR_GEOCORRECT") == 0)
-      {
+    {
 	int enable_geo;
 	if (req_type > 0)	// Doing a set
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDGeoCorEn, &enable_geo);
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
 		     "#%d:setpv<s>:setGeoCorrect:%i,\r\n", 
 		     m_sendCommandCounter++, enable_geo);
-	  }
+        }
 	else			// Doing a query
-	  {
+        {
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
 		     m_sendCommandCounter++);
 	    ///DEBUGGING
 	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
-	  }
-      }
+        }
+    }
     else if (strcmp(pcmd, "COR_ROTATE") == 0)
-      {
+    {
 	int enable_rotate;
 	double rotate_theta;
 	if (req_type > 0)	// Doing a set
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorRotEn, &enable_rotate);
 	    m_syscmos->getDoubleParam(m_syscmos->SDCorRotTheta, &rotate_theta);
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
 		     "#%d:setpv<s>:setRotation:%i,%f\r\n", 
 		     m_sendCommandCounter++, enable_rotate, rotate_theta);
-	  }
+        }
 	else			// Doing a query
-	  {
+        {
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<d>:ds2c_Apply_Cor?ROTATE\r\n",
 		     m_sendCommandCounter++);
 	    ///DEBUGGING
 	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
-	  }
-      }
+        }
+    }
     else if (strcmp(pcmd, "COR_HPR") == 0) // Hot Pixel Removal
-      {
+    {
 	int enable_hpr;
 	double hpr_ratio;
 	if (req_type > 0)	// Doing a set
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorHPREn, &enable_hpr);
 	    m_syscmos->getDoubleParam(m_syscmos->SDCorHPRRatio, &hpr_ratio);
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
 		     "#%d:setpv<s>:setHotPixel:%i,%f\r\n", 
 		     m_sendCommandCounter++, enable_hpr, hpr_ratio);
-	  }
+        }
 	else			// Doing a query
-	  {
+        {
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<d>:ds2c_Apply_Cor?HPR\r\n",
 		     m_sendCommandCounter++);
 	    ///DEBUGGING
 	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
-	  }
-      }
+        }
+    }
     else if (strcmp(pcmd, "AcqROI") == 0)
-      {
+    {
 	int enable_roi, min_x, min_y, size_x, size_y;
 	if (req_type > 0)	// We are doing a set
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
 	    m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
 	    m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
@@ -211,21 +212,21 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
 		     "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
 		     m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
-	  }
+        }
 	else			// We are doing a get
-	  {
+        {
 	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<s>:Region?\r\n",
 		     m_sendCommandCounter++);
-	  }
-      }
+        }
+    }
     else if (strcmp(pcmd, "COR_OVERSCAN") == 0)
-      {
+    {
 	int overscan_enable;
 	int overscan_amt;
 
 	if (req_type > 0) // Setting parameters
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubEn, &overscan_enable);
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorOverscanSubAmt, &overscan_amt);
 	    ///XXX Override since value is dummied out currently
@@ -233,22 +234,22 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
 		     "#%d:setpv<s>:setOverscanSubtract:%i,%i\r\n",
 		     m_sendCommandCounter++, overscan_enable, overscan_amt);
-	  }
+        }
 	else			// Doing a get
-	  {
+        {
 	    /// XXX TODO FIXME No get command yet, so do a GUI Refresh
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<s>:*:0\r\n",
 		     m_sendCommandCounter++);
-	  }
-      }
+        }
+    }
     else if (strcmp(pcmd, "COR_ASSEMBLE") == 0)
-      {
+    {
 	int assemble_enable;
 	int assemble_arg;
 
 	if (req_type > 0) // Setting parameters
-	  {
+        {
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorAssembleEn, &assemble_enable);
 	    m_syscmos->getIntegerParam(m_syscmos->SDCorAssembleArg, &assemble_arg);
 	    ///XXX Override since value is dummied out currently
@@ -256,15 +257,15 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
 		     "#%d:setpv<s>:setAssemble:%i,%i\r\n",
 		     m_sendCommandCounter++, assemble_enable, assemble_arg);
-	  }
+        }
 	else			// Doing a get
-	  {
+        {
 	    /// XXX TODO FIXME No get command yet, so do a GUI Refresh
 	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,
 		     "#%d:getpv<s>:*:0\r\n",
 		     m_sendCommandCounter++);
-	  }
-      }
+        }
+    }
     
     ///
     fflush(stdout);
@@ -279,32 +280,32 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 
 int CPV_Interface_IOC::_FindMatchingCmd( const int cmd_num, char *cmdName, enum SD_Param_Type *data_type) //data_type = NULL
 {
-  ///printf("FindMatchingCmd: cmd: \"%s\"\n", cmdName);
-  int ret = 0;		// Default to no match
-  for (const auto &n : m_syscmos->pv_data_list )
+    ///printf("FindMatchingCmd: cmd: \"%s\"\n", cmdName);
+    int ret = 0;		// Default to no match
+    for (const auto &n : m_syscmos->pv_data_list )
     {
-      if (cmd_num == n.param_num) // We match on a setter/getter
+        if (cmd_num == n.param_num) // We match on a setter/getter
 	{
-	  strcpy(cmdName, n.command_string);
-	  ret = 1;		// Note that we are a settter/getter
+            strcpy(cmdName, n.command_string);
+            ret = 1;		// Note that we are a settter/getter
 	}
-      else if (cmd_num == n.param_q_num)
+        else if (cmd_num == n.param_q_num)
 	{
-	  strcpy(cmdName, n.command_string);
-	  ret = -1;		// Note we are a querier
+            strcpy(cmdName, n.command_string);
+            ret = -1;		// Note we are a querier
 	}
-      if (ret)	// We found a match 
+        if (ret)	// We found a match 
 	{
-	  if (data_type)	// Returning type as well
+            if (data_type)	// Returning type as well
 	    {
-	      *data_type = n.pv_type;
+                *data_type = n.pv_type;
 	    }
-	  return ret;
+            return ret;
 	}
     }
-  ///TODO assert like in _FindMatchingPV()?
+    ///TODO assert like in _FindMatchingPV()?
   
-  return 0;			// Parameter not found
+    return 0;			// Parameter not found
 }
 
 
@@ -336,47 +337,47 @@ bool CPV_Interface_IOC::_FindMatchingPV( const char *pvName, char *acmdName)
 //    asynError (= 3)
 int CPV_Interface_IOC::GetPV(const char *cmdName, int paramNum)
 {
-  const char *paramName = NULL;		// The PV asyn name, looked up by number
-  bool bMatch;
-  char *paramType;
+    const char *paramName = NULL;		// The PV asyn name, looked up by number
+    bool bMatch;
+    char *paramType;
     
-  m_syscmos->getParamName(0, paramNum, &paramName);
+    m_syscmos->getParamName(0, paramNum, &paramName);
 
-  ///FIXME TODO Handle the Get parameters
-  //bMatch = _FindResponsePV(paramName, s_cmdName);
-  bMatch = false;
+    ///FIXME TODO Handle the Get parameters
+    //bMatch = _FindResponsePV(paramName, s_cmdName);
+    bMatch = false;
   
-  if (!bMatch)
+    if (!bMatch)
     {
-      ///printf(" :: unhandled command:%s\n", paramName);
-      ///free(paramName);
-      return -1;
+        ///printf(" :: unhandled command:%s\n", paramName);
+        ///free(paramName);
+        return -1;
     }
-  else
+    else
     {
-      ///printf(" cmdName = %s \n", s_cmdName);
+        ///printf(" cmdName = %s \n", s_cmdName);
     }
-  ///free(paramName);
+    ///free(paramName);
 
-  if (m_syscmos->pv_dv_types[paramNum] == SD_INT32)
+    if (m_syscmos->pv_dv_types[paramNum] == SD_INT32)
     {
-      paramType = kSTR_INT32;
+        paramType = kSTR_INT32;
     }
-  else if (m_syscmos->pv_dv_types[paramNum] == SD_DOUBLE)
+    else if (m_syscmos->pv_dv_types[paramNum] == SD_DOUBLE)
     {
-      paramType = kSTR_DOUBLE;
+        paramType = kSTR_DOUBLE;
     }
-  else
+    else
     {
-      paramType = kSTR_STRING;
+        paramType = kSTR_STRING;
     }
   
   
-  //TODO Handle type of PV below -- string in lookup table?
-  snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-	   "#%d:getpv<%s>:%s?\r\n", m_sendCommandCounter++, paramType, s_cmdName);
+    //TODO Handle type of PV below -- string in lookup table?
+    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+             "#%d:getpv<%s>:%s?\r\n", m_sendCommandCounter++, paramType, s_cmdName);
 
-  return writeWithReply(m_privateBuffer);
+    return writeWithReply(m_privateBuffer);
 }
 
 //  PV           DV
@@ -393,12 +394,12 @@ int CPV_Interface_IOC::GetPV(const char *cmdName, int paramNum)
 //    asynError ( = 3 )
 int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
 {
-  enum SD_Param_Type data_type;
-  int cmdMatch = _FindMatchingCmd(pvNum, /* out */ s_cmdName, &data_type);
+    enum SD_Param_Type data_type;
+    int cmdMatch = _FindMatchingCmd(pvNum, /* out */ s_cmdName, &data_type);
 
     if (cmdMatch == 0)
     {
-      //TODO Put in lookup of command name here?
+        //TODO Put in lookup of command name here?
         printf(" :: unhandled command:%i\n", pvNum);
         return (-1);
     }
@@ -407,40 +408,40 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
     bool bSpecialCommand = false;  (void)bSpecialCommand; // SUC
     if (s_cmdName[0] == kSPECIALCHAR_FLAG) // TODO Add query support
     {
-      bSpecialCommand = _HandleSpecialCommands(s_cmdName, cmdMatch);
+        bSpecialCommand = _HandleSpecialCommands(s_cmdName, cmdMatch);
         // ^ returns long string in m_privateBuffer
     }
     else if (cmdMatch < 0)		// We are doing a get
-      {
+    {
 	char * type_string;
 	if (data_type == SD_INT32)
-	  {
+        {
 	    type_string = kSTR_INT32;
-	  }
+        }
 	else if (data_type == SD_DOUBLE)
-	  {
+        {
 	    type_string = kSTR_DOUBLE;
-	  }
+        }
 	else if (data_type == SD_STRING)
-	  {
+        {
 	    type_string = kSTR_STRING;
-	  }
+        }
 	else			// Shouldn't be here
-	  {
+        {
 	    printf("Unknown query data type: %i\n", data_type);
 	    return -1;
-	  }
+        }
 	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		 "#%d:getpv<%s>:%s?\r\n", m_sendCommandCounter++, type_string, s_cmdName);
-      }
+    }
     else 			// We are doing a set -- cmdMatch > 0
     {
         //
         // SEND Request to change
         //
-      /// TODO Perhaps look up data type?  May not be necessary for a set
+        /// TODO Perhaps look up data type?  May not be necessary for a set
         snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-        "#%d:setpv<i32>:%s:%d\r\n", m_sendCommandCounter++, s_cmdName, val);
+                 "#%d:setpv<i32>:%s:%d\r\n", m_sendCommandCounter++, s_cmdName, val);
     }
     return writeWithReply(m_privateBuffer); 
 
@@ -456,8 +457,8 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsInt32 val)
 //    asynError ( = 3 )
 int CPV_Interface_IOC::SetPV(const int pvNum, epicsFloat64 val)
 {
-  int cmdMatch = _FindMatchingCmd(pvNum, /*out */ s_cmdName);
-  bool bSpecialCommand = false;
+    int cmdMatch = _FindMatchingCmd(pvNum, /*out */ s_cmdName);
+    bool bSpecialCommand = false;
 
    
     // can decide HERE if PV is handled - or can forward to socket and look for ? response.
@@ -466,71 +467,71 @@ int CPV_Interface_IOC::SetPV(const int pvNum, epicsFloat64 val)
 
     if (cmdMatch == 0)
     {
-      ///TODO Put in a lookup of command name?
+        ///TODO Put in a lookup of command name?
         printf(" :: unhandled command num:%i\n", pvNum);
         return (-1);
     }
     else
     {
-      ///printf(" cmdName = %s \n", s_cmdName);
+        ///printf(" cmdName = %s \n", s_cmdName);
     }
 
     if (s_cmdName[0] == kSPECIALCHAR_FLAG)
-      {
+    {
 	bSpecialCommand = _HandleSpecialCommands(s_cmdName, cmdMatch);
-      }
+    }
     else if (cmdMatch > 0)
-      {
+    {
 	snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
 		 "#%d:setpv<d>:%s:%f\r\n", m_sendCommandCounter++, s_cmdName, (double)val);
-      }
+    }
     else // A query ///TODO FIXME Handle this
-      {
-      }
+    {
+    }
     return writeWithReply(m_privateBuffer); 
     
 };
 
 int CPV_Interface_IOC::SetPV(const int pvNum, const char *pval)
 {
-  ///printf("F:%s pvName:%s, val:%s", __func__, pvName, pval); // DEBUG
+    ///printf("F:%s pvName:%s, val:%s", __func__, pvName, pval); // DEBUG
 
     // can decide HERE if PV is handled - or can forward to socket and look for ? response.
     // It is probably more efficient to check here first
 
-  int cmdMatch = _FindMatchingCmd(pvNum, /*out*/ s_cmdName);
+    int cmdMatch = _FindMatchingCmd(pvNum, /*out*/ s_cmdName);
 
-  if (cmdMatch == 4)
+    if (cmdMatch == 4)
     {
-      ///TODO Put in a looklup of command name?
+        ///TODO Put in a looklup of command name?
         printf(" :: unhandled command number:%i\n", pvNum);
         return (-1);
     }
     else
     {
-      ///printf(" cmdName = %s \n", s_cmdName);
+        ///printf(" cmdName = %s \n", s_cmdName);
     }
 
 
-  ///TODO Handle results properly
+    ///TODO Handle results properly
 
     // SEND Request to change
     //
-  // Test to see if we should send
-  if (s_cmdName[0] = '^')       // Inhibit Send prefix
-  {
-      // Set the parameter for readback, then return success
-      //-=-= DEBUGGING
-      printf("Inhibited Command String: %s\nParam Index %i\nNew Value: %s\n", s_cmdName, pvNum, pval);
-      m_syscmos->setStringParam(pvNum, pval);
-      return 0;
-  }
-  else
-  {
-    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-       "#%d:setpv<d>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
-    return writeWithReply(m_privateBuffer); 
-  }
+    // Test to see if we should send
+    if (s_cmdName[0] = '^')       // Inhibit Send prefix
+    {
+        // Set the parameter for readback, then return success
+        //-=-= DEBUGGING
+        printf("Inhibited Command String: %s\nParam Index %i\nNew Value: %s\n", s_cmdName, pvNum, pval);
+        m_syscmos->setStringParam(pvNum, pval);
+        return 0;
+    }
+    else
+    {
+        snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                 "#%d:setpv<d>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
+        return writeWithReply(m_privateBuffer); 
+    }
      
 };
 
@@ -594,7 +595,7 @@ asynStatus CPV_Interface_IOC::writeWithReply(char *pstr)
 
     }
 
-    eventStatus = epicsEventWaitWithTimeout(this->cmdEventId, 1);
+    eventStatus = epicsEventWaitWithTimeout(this->cmdEventId, 0.001);
 
     ///printf("  _returned from epicsEventWait %d\n", eventStatus );
     ///printf("%s: returning %i.\n", __FUNCTION__, status);
@@ -625,8 +626,8 @@ void ReplaceStringInPlace(std::string& subject, const std::string& search,
                           const std::string& replace) {
     size_t pos = 0;
     while ((pos = subject.find(search, pos)) != std::string::npos) {
-         subject.replace(pos, search.length(), replace);
-         pos += replace.length();
+        subject.replace(pos, search.length(), replace);
+        pos += replace.length();
     }
 }
 
@@ -666,8 +667,8 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
     {
         // #5:setpv<i32>:TriggerMode:1:OK \r\n          -- or --
         // #5:async<i32>:TriggerMode:1:ERRnnnn \r\n
-      if ((0 != out[1].find(kSTR_SETPV))
-	  && (0 != out[1].find(kSTR_GETPV)))
+        if ((0 != out[1].find(kSTR_SETPV))
+            && (0 != out[1].find(kSTR_GETPV)))
         {
             // Expected 'setpv' or 'getpv' - not found
             return (-1); //  **** EXIT
@@ -680,7 +681,7 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
         }
         else if ( 0 == out[4].find("ERR") )
         {
-	  int errcode = atoi(out[4].substr(3,std::string::npos).c_str() );
+            int errcode = atoi(out[4].substr(3,std::string::npos).c_str() );
             return (-errcode); //  **** EXIT
         }
         else
@@ -713,41 +714,19 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 
     ///DEBUGGING
     if (!bOK)
-      {
+    {
 	return -1;
-      }
+    }
     
     ///printf("Debug F:%s %s %s OK:%d \n", __func__, 
     ///    strResponse, pvname.c_str(), bOK);
 
-    if (_FindResponsePV(pvname.c_str(), nFunction))
-      {
-	///printf("Found command %s in map search.\n", pvname.c_str());
-	///printf("asyn param name: %s\n", s_pvName);
-	///XXX Need to handle based on type
-	//m_syscmos->findParam(s_pvName, nFunction);
-	///TODO Need to get response code correct
-	///FIXME type parsing is temporarily disabled
-	if (out[1].find("<i32>") != std::string::npos) // Integer type
-	  {
-	    prt->nType = 1;
-	    prt->ival = atoi(strval.c_str());
-	  }
-	else			// FIXME XXX handle string as well as double
-	  {
-	    ///
-	    printf("Handling double param.\n");
-	    fflush(stdout);
-	    prt->nType = 2; // float64
-	    prt->fval = atof(strval.c_str());
-	  }
-      }
-    else if (_FindSpecialResponse(pvname)) // Could be a special command
-      {
+    if (_FindSpecialResponse(pvname)) // Check for special commands first
+    {
 	ret = 1;		// A success, but we will not handle after return
 	/// TODO ICM -- Maybe break this out to a separate function
 	if (pvname == "Region")	// A region lookup
-	  {
+        {
 	    int enable_roi, min_x, min_y, size_x, size_y;
 	    sscanf(strval.c_str(), " %i , %i , %i , %i , %i ", &enable_roi, &min_x, &min_y,
 		   &size_x, &size_y);
@@ -756,61 +735,185 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 	    m_syscmos->setIntegerParam(m_syscmos->ADMinY, min_y);
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeX, size_x);
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeY, size_x);
-	  }
+        }
 	else if (pvname == "ds2c_Apply_Cor?ROTATE")
-	  {
+        {
 	    int enable_rot;
 	    double rot_theta;
 	    
 	    sscanf(strval.c_str(), " %i , %lf", &enable_rot, &rot_theta);
 	    m_syscmos->setIntegerParam(m_syscmos->SDCorRotEn, enable_rot);
 	    m_syscmos->setDoubleParam(m_syscmos->SDCorRotTheta, rot_theta);
-	  }
-      }
+        }
+        else if (pvname == "IntegTime")
+        {
+            double integ_time[8];
+            //-=-= TODO Parameterize
+            //-=-= DEBUGGING
+            printf("Integration Time String: %s\n", strval.c_str());
 
+            // Need to test if we have just one number or all eight
+            if (strval.c_str()[0] == '{') // List of eight numbers
+            {
+                sscanf(strval.c_str(), "{ %lf , %lf , %lf , %lf , %lf , %lf, %lf, %lf",
+                       integ_time+0, integ_time+1, integ_time+2, integ_time+3,
+                       integ_time+4, integ_time+5, integ_time+6, integ_time+7);
+            }
+            else                // One number
+            {
+                int32_t time_idx;
+                sscanf(strval.c_str(), " %lf", integ_time+0);
+                for (time_idx = 1; time_idx<8; time_idx++)
+                {
+                    integ_time[time_idx] = integ_time[0];
+                }
+            }
+
+            //-=-= DEBUGGING
+            printf("First integration times: %f %f %f %f\n",
+                   integ_time[0], integ_time[1], integ_time[2], integ_time[3]);
+            
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg1, integ_time[0]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg2, integ_time[1]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg3, integ_time[2]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg4, integ_time[3]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg5, integ_time[4]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg6, integ_time[5]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg7, integ_time[6]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInteg8, integ_time[7]);
+        }
+        else if (pvname == "InterTime")
+        {
+            double inter_time[8];
+            //-=-= TODO Parameterize
+
+            // Need to test if we have just one number or all eight
+            if (strval.c_str()[0] == '{') // List of eight numbers
+            {
+                
+                sscanf(strval.c_str(), "{ %lf , %lf , %lf , %lf , %lf , %lf, %lf, %lf",
+                       inter_time+0, inter_time+1, inter_time+2, inter_time+3,
+                       inter_time+4, inter_time+5, inter_time+6, inter_time+7);
+            }
+            else                // One number
+            {
+                int32_t time_idx;
+                sscanf(strval.c_str(), " %lf", inter_time+0);
+                for (time_idx = 1; time_idx<8; time_idx++)
+                {
+                    inter_time[time_idx] = inter_time[0];
+                }
+            }
+            
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter1, inter_time[0]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter2, inter_time[1]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter3, inter_time[2]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter4, inter_time[3]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter5, inter_time[4]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter6, inter_time[5]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter7, inter_time[6]);
+            m_syscmos->setDoubleParam(m_syscmos->SDCapInter8, inter_time[7]);
+        }
+        else if (pvname == "Gain")
+        {
+            int32_t cap_gain[8];
+            //-=-= TODO Parameterize
+                        
+            sscanf(strval.c_str(), "{ %i , %i , %i , %i , %i , %i, %i, %i",
+                   cap_gain+0, cap_gain+1, cap_gain+2, cap_gain+3,
+                   cap_gain+4, cap_gain+5, cap_gain+6, cap_gain+7);
+
+                        
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain1, cap_gain[0]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain2, cap_gain[1]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain3, cap_gain[2]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain4, cap_gain[3]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain5, cap_gain[4]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain6, cap_gain[5]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain7, cap_gain[6]);
+            m_syscmos->setIntegerParam(m_syscmos->SDCapGain8, cap_gain[7]);
+        }
+    }
+
+    else if (_FindResponsePV(pvname.c_str(), nFunction))
+    {
+	///printf("Found command %s in map search.\n", pvname.c_str());
+	///printf("asyn param name: %s\n", s_pvName);
+	///XXX Need to handle based on type
+	//m_syscmos->findParam(s_pvName, nFunction);
+	///TODO Need to get response code correct
+	///FIXME type parsing is temporarily disabled
+	if (out[1].find("<i32>") != std::string::npos) // Integer type
+        {
+	    prt->nType = 1;
+	    prt->ival = atoi(strval.c_str());
+        }
+	else			// FIXME XXX handle string as well as double
+        {
+	    ///
+	    printf("Handling double param.\n");
+	    fflush(stdout);
+	    prt->nType = 2; // float64
+	    prt->fval = atof(strval.c_str());
+        }
+    }
+    
     // TODO: create MapToDV( ADAcquireTimeString) - returns IntegTime
     
-      /// TODO May want to return a different code if _FindResponsePV and 
-      /// _FindSpecialResponsePV are false
+    /// TODO May want to return a different code if _FindResponsePV and 
+    /// _FindSpecialResponsePV are false
     return (ret);
 }
 
 bool CPV_Interface_IOC::_FindSpecialResponse(const std::string &cmd_str)
 {
-  if (cmd_str == "Region")
+    if (cmd_str == "Region")
     {
-      return true;
+        return true;
     }
-  if (cmd_str == "setGeoCorrect") /// FIXME Need to find out what the strings are
+    if (cmd_str == "setGeoCorrect") /// FIXME Need to find out what the strings are
     {
-      return true;
+        return true;
     }
-  if (cmd_str == "setRotation")
+    if (cmd_str == "setRotation")
     {
-      return true;
+        return true;
     }
-  if (cmd_str == "ds2c_Apply_Cor?ROTATE")
+    if (cmd_str == "ds2c_Apply_Cor?ROTATE")
     {
-      return true;
+        return true;
     }
-  if (cmd_str == "ds2c_ApplyCor?GEOCORRECTION")
+    if (cmd_str == "ds2c_ApplyCor?GEOCORRECTION")
     {
-      return true;
+        return true;
     }
-  return false;
+    if (cmd_str == "IntegTime")
+    {
+        return true;
+    }
+    if (cmd_str == "InterTime")
+    {
+        return true;
+    }
+    if (cmd_str == "Gain")
+    {
+        return true;
+    }
+  
+    return false;
 }
 
 
 bool CPV_Interface_IOC::_FindResponsePV(const char *cmd_str, int *pv_num)
 {
-  for (auto n: m_syscmos->pv_data_list)
+    for (auto n: m_syscmos->pv_data_list)
     {
-      if (strcmp(cmd_str, n.command_string) == 0)
+        if (strcmp(cmd_str, n.command_string) == 0)
 	{
-	  *pv_num = n.param_num; // XXX Never need to return the Query reference
-	  return true;
+            *pv_num = n.param_num; // XXX Never need to return the Query reference
+            return true;
 	}
     }
-  *pv_num = -1;
-  return false;
+    *pv_num = -1;
+    return false;
 }
