@@ -74,7 +74,7 @@ for curr_line in template_file:
             record_type = ["longout", "longin"];
             record_dtyp = ["asynInt32", "asynInt32"];
         elif pv_type == 's':
-            record_type = ["stringout", "stringin"];
+            record_type = ["waveform", "waveform"];
             record_dtyp = ["asynOctetWrite", "asynOctetRead"];
         else:                   # TODO Add string handling
             print("Invalid data type.");
@@ -100,6 +100,8 @@ for curr_line in template_file:
 
             if record_idx == 0:
                 addr_line = 'field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT)){}")\n'.format(asyn_name);
+                if pv_type == 's': # Waveforms are only INP
+                    addr_line = 'field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)){}")\n'.format(asyn_name);
             elif record_idx == 1:
                 addr_line = 'field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)){}")\n'.format(asyn_name);
             else:               # Shouldn't be here
@@ -107,6 +109,13 @@ for curr_line in template_file:
                 sys.exit(1);
 
             param_db_file.write(addr_line);
+
+            # Code to handle strings, which are waveforms
+            if pv_type == 's':
+                ftvl_line = 'field(FTVL, "UCHAR")\n';
+                param_db_file.write(ftvl_line);
+                nelm_line = 'field(NELM, "256")\n';
+                param_db_file.write(nelm_line);
             out_line = '}\n\n';
             param_db_file.write(out_line);
                 
