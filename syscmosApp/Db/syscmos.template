@@ -79,7 +79,7 @@ record(mbbo, "$(P)$(R)TriggerMode")
 {
 field(PINI, "YES")
 field(VAL, "0")
-field(ZRVL, "4")
+field(ZRVL, "0")
 field(ZRST, "Software")
 field(ONVL, "1")
 field(ONST, "Standard")
