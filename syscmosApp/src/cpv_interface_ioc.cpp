@@ -447,7 +447,7 @@ int CPV_Interface_IOC::SetPV(const int pvNum, const char *pval)
     // SEND Request to change
     //
     snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-       "#%d:setpv<d>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
+       "#%d:setpv<s>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
     return writeWithReply(m_privateBuffer); 
 
      
