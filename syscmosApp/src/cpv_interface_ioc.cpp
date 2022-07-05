@@ -93,7 +93,7 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
     bool bret = false;
 
     ///
-    printf("Handling special command: %s", pcmd);
+    printf("Handling special command: %s\n", pcmd);
     if (strcmp(pcmd, "SPECIAL_START_RUN") == 0)
     {
         std::string runName, setName, setDescription;

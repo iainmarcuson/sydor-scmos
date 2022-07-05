@@ -909,7 +909,8 @@ void syscmos::controlSocketListenTask()
         }
         else
         {
-            printf("   ParseResponse() with error %d\n", ret);
+            //-=-= DEBUGGING
+            //printf("   ParseResponse() with error %d\n", ret);
 
         }
 
@@ -1590,8 +1591,9 @@ asynStatus syscmos::writeInt32(asynUser *pasynUser, epicsInt32 value)
   
   int ret = m_cpv_interface->SetPV(function, value);
 
-  printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",
-	 __FUNCTION__, ret, asynDisconnected, asynTimeout);
+  //-=-= DEBUGGING
+  //printf("%s: SetPV returned %i.  Magic values are %i and %i.\n",
+  //__FUNCTION__, ret, asynDisconnected, asynTimeout);
   if ((asynDisconnected == ret) || (asynTimeout == ret)) //Assume link down
     {
       setIntegerParam(SDEPICSLinkStatus, 0);
