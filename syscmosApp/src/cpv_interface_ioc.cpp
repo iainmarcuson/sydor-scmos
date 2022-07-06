@@ -513,7 +513,7 @@ asynStatus CPV_Interface_IOC::writeWithReply(char *pstr)
 
     }
 
-    eventStatus = epicsEventWaitWithTimeout(this->cmdEventId, 1);
+    eventStatus = epicsEventWaitWithTimeout(this->cmdEventId, 0.1);
 
     ///printf("  _returned from epicsEventWait %d\n", eventStatus );
     ///printf("%s: returning %i.\n", __FUNCTION__, status);
