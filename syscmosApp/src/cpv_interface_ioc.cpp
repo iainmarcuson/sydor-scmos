@@ -674,7 +674,7 @@ int CPV_Interface_IOC::ParseResponse(const char *strResponse, int *nFunction, PR
 	    m_syscmos->setIntegerParam(m_syscmos->ADMinX, min_x);
 	    m_syscmos->setIntegerParam(m_syscmos->ADMinY, min_y);
 	    m_syscmos->setIntegerParam(m_syscmos->ADSizeX, size_x);
-	    m_syscmos->setIntegerParam(m_syscmos->ADSizeY, size_x);
+	    m_syscmos->setIntegerParam(m_syscmos->ADSizeY, size_y);
 	  }
 	else if (pvname == "ds2c_Apply_Cor?ROTATE")
 	  {
