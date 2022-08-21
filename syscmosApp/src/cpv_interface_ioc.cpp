@@ -446,11 +446,22 @@ int CPV_Interface_IOC::SetPV(const int pvNum, const char *pval)
 
     // SEND Request to change
     //
-    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-       "#%d:setpv<s>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
-    return writeWithReply(m_privateBuffer); 
-
-     
+  // Test to see if we should send
+    if (s_cmdName[0] = '^')       // Inhibit Send prefix
+    {
+        // Set the parameter for readback, then return success
+        //-=-= DEBUGGING
+        printf("Inhibited Command String: %s\nParam Index %i\nNew Value: %s\n", s_cmdName, pvNum, pval);
+        m_syscmos->setStringParam(pvNum, pval);
+        return 0;
+    }
+    else
+    {
+        snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                 "#%d:setpv<d>:%s:%s\r\n", m_sendCommandCounter++, s_cmdName, pval);
+        return writeWithReply(m_privateBuffer); 
+    }
+         
 };
 
 
