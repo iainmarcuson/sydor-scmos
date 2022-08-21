@@ -4,7 +4,12 @@ Sydor GenCam Code Generation
 Introduction
 ------------
 
-The readback parameters and code are programatically generated.  A template and utility are provided to generate the database and readback code.
+The readback parameters and code are programatically generated.  A template and utility are provided to generate the database and readback code.  The parameters are generated on a per-camera basis, so the correct parameter file will need to be selected.
+
+Parameter File Selection
+------------------------
+
+1.  `cp <camera-specific file> areadetector_template.txt`
 
 Code Generation
 ---------------
