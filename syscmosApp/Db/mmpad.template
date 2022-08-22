@@ -1,0 +1,240 @@
+#---------------------------
+# MMPAD-Specfic Parameters
+#---------------------------
+
+record(mbbo, "$(P)$(R)TriggerMode")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Software")
+field(ONVL, "1")
+field(ONST, "Hardware")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+field(ZRVL, "0")
+field(ZRST, "Software")
+field(ONVL, "1")
+field(ONST, "Hardware")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+#----------------------------------
+# Start Run
+#----------------------------------
+record (bo, "$(P)$(R)StartRun")
+{
+    field (DESC, "Start Run")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_START_RUN")
+    field (ZNAM, "Disable")
+    field (ONAM, "Enable")
+    field (VAL,  "0")
+    #field (PINI, "YES")
+}
+
+#----------------------------------
+# Start DataViewer Acquisition
+#----------------------------------
+
+record(longout, "$(P)$(R)DVStart")
+{
+field (DESC, "Start DataViewr Acq")
+field (DTYP, "asynInt32")
+field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_START")
+field (VAL, "1")
+}
+
+#----------------------------------
+# Select Run for Display
+#----------------------------------
+
+record(longout, "$(P)$(R)SelectRun")
+{
+field (DESC, "Select DataViewer Display")
+field (DTYP, "asynInt32")
+field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SELECT_RUN")
+field (VAL, "1")
+}
+
+#----------------------------------
+# Select number of frames to load
+#----------------------------------
+
+record(longout, "$(P)$(R)LoadNumFrames")
+{
+field (DESC, "Frames to Load")
+field (DTYP, "asynInt32")
+field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_LD_NUM_FRAMES")
+field (VAL, "1")
+}
+
+record(longin, "$(P)$(R)LoadNumFrames_RBV")
+{
+field (DESC, "Frames to Load")
+field (DTYP, "asynInt32")
+field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_LD_NUM_FRAMES")
+}
+
+#----------------------------------
+# Software trigger GO!
+#----------------------------------
+record (bo, "$(P)$(R)DoTrigger")
+{
+    field (DESC, "Do a Software Trigger")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_DO_TRIGGER")
+    field (ZNAM, "Disable")
+    field (ONAM, "Enable")
+    field (VAL,  "0")
+    #field (PINI, "YES")
+}
+
+
+#----------------------------------
+# Sensor Power
+#----------------------------------
+record (bo, "$(P)$(R)SensorPower")
+{
+    field (DESC, "Sensor Power")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENSOR_POWER")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
+    field (VAL,  "0")
+    #field (PINI, "YES")
+}
+
+record(bi, "$(P)$(R)SensorPower_RBV")
+{
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENSOR_POWER")
+field (ZNAM, "Disable")
+field (ONAM, "Enable")
+field (VAL,  "0")
+field(SCAN, "I/O Intr")
+}
+
+#-----------------
+# Sensor Bias
+#-----------------
+
+record(mbbo, "$(P)$(R)BiasRoute")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Float")
+field(ONVL, "1")
+field(ONST, "ON")
+field(TWVL, "2")
+field(TWST, "Shunt")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
+}
+
+record(mbbi, "$(P)$(R)BiasRoute_RBV")
+{
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Float")
+field(ONVL, "1")
+field(ONST, "ON")
+field(TWVL, "2")
+field(TWST, "Shunt")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
+}
+
+
+#----------------------------------
+# Sensor Power
+#----------------------------------
+record (bo, "$(P)$(R)SensorBias")
+{
+    field (DESC, "Sensor Bias")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENS_BIAS")
+    field (ZNAM, "Off")
+    field (ONAM, "On")
+    field (VAL,  "0")
+}
+
+record(bi, "$(P)$(R)SensorBias_RBV")
+{
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SENS_BIAS")
+field (ZNAM, "Off")
+field (ONAM, "On")
+field (VAL,  "0")
+field(SCAN, "I/O Intr")
+}
+
+#---------------------------
+# Bias Routing
+#---------------------------
+
+
+
+###################################################################
+#  These records control the acquisition time and                 #
+#  period                                                         # 
+###################################################################
+
+
+record(stringout, "$(P)$(R)QueryPlugin")
+{
+   field(DTYP, "asynOctetWrite")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COMMAND_OUT")
+   field(VAL,  "Unknown")
+}
+
+
+#record(stringout, "$(P)$(R)RunName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_NAME")
+#   field(VAL,  "Unknown")
+#}
+#record(stringout, "$(P)$(R)SetName")
+#{
+#   field(DTYP, "asynOctetWrite")
+#   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_NAME")
+#   field(VAL,  "Unknown")
+#}
+
+record(stringout, "$(P)$(R)SetDescription")
+{
+   field(DTYP, "asynOctetWrite")
+   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_DESCRIPTION")
+   field(VAL,  "Unknown")
+}
+
+
+record (bo, "$(P)$(R)CorGeoEn")
+{
+field(DESC, "Enable Geocorrection")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GEOCORRECT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+#--------------------------------
+# Corrections
+#--------------------------------
+
+record (bi, "$(P)$(R)CorGeoEn_RBV")
+{
+field(DESC, "Enable Geocorrection")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_GEOCORRECT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+field(SCAN, "I/O Intr")
+}
