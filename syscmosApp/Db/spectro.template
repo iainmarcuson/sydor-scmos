@@ -1,0 +1,283 @@
+#-----------------------------
+# Spectro-specific Parameters
+#-----------------------------
+
+record(mbbo, "$(P)$(R)TriggerMode")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Internal")
+field(ONVL, "1")
+field(ONST, "External")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+record(mbbi, "$(P)$(R)TriggerMode_RBV")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "4")
+field(ZRST, "Software")
+field(ONVL, "1")
+field(ONST, "Standard")
+field(TWVL, "2")
+field(TWST, "Synchronous")
+field(THVL, "3")
+field(THST, "Global")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+#----------------------------------
+# Start Run
+#----------------------------------
+record (bo, "$(P)$(R)StartRun")
+{
+    field (DESC, "Start Run")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_START_RUN")
+    field (ZNAM, "Disable")
+    field (ONAM, "Enable")
+    field (VAL,  "0")
+    #field (PINI, "YES")
+}
+
+#----------------------------------
+# Start DataViewer Acquisition
+#----------------------------------
+
+record(longout, "$(P)$(R)DVStart")
+{
+field (DESC, "Start DataViewr Acq")
+field (DTYP, "asynInt32")
+field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_START")
+field (VAL, "1")
+}
+
+#----------------------------------
+# Software trigger GO!
+#----------------------------------
+record (bo, "$(P)$(R)DoTrigger")
+{
+    field (DESC, "Do a Software Trigger")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_DO_TRIGGER")
+    field (ZNAM, "Disable")
+    field (ONAM, "Enable")
+    field (VAL,  "0")
+    #field (PINI, "YES")
+}
+
+########################
+# Correction PVs       #
+########################
+
+record (bo, "$(P)$(R)CorRotEn")
+{
+field(DESC, "Enable Rotation Correction")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ROT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorRotEn_RBV")
+{
+field(DESC, "Enable Rotation Correction")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ROT_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+field(SCAN, "I/O Intr")
+}
+
+#######################
+# Readout Mode
+#######################
+
+record(mbbo, "$(P)$(R)ReadoutMode")
+{
+field(DESC, "Readout Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READOUT_MODE")
+field(ZRST, "Double")
+field(ZRVL, "0")
+field(ONST, "Interleaved")
+field(ONVL, "1")
+field(TWST, "Uni-directional")
+field(TWVL, "2")
+field(VAL, "1")
+}
+
+record(mbbi, "$(P)$(R)ReadoutMode_RBV")
+{
+field(DESC, "Readout Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READOUT_MODE")
+field(ZRST, "Double")
+field(ZRVL, "0")
+field(ONST, "Interleaved")
+field(ONVL, "1")
+field(TWST, "Uni-directional")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+###################################
+# Overscan Subtraction Correction #
+###################################
+
+record (bo, "$(P)$(R)CorOverscanSubEn")
+{
+field(DESC, "Enable Overscan Subtraction")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_OVER_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorOverscanSubEn_RBV")
+{
+field(DESC, "Enable Overscan Subraction")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_OVER_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+#############################
+# Image Assembly Correction #
+#############################
+
+record (bo, "$(P)$(R)CorAssembleEn")
+{
+field(DESC, "Enable Image Assembly")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ASSEMBLE_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorAssembleEn_RBV")
+{
+field(DESC, "Enable Image Assembly")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_ASSEMBLE_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+#######################
+# Shutter Mode
+#######################
+
+record(mbbo, "$(P)$(R)ShutterMode")
+{
+field(DESC, "Shutter Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
+field(ZRST, "Normal")
+field(ZRVL, "0")
+field(ONST, "Force Open")
+field(ONVL, "1")
+field(TWST, "Force Closed")
+field(TWVL, "2")
+field(VAL, "0")
+}
+
+record(mbbi, "$(P)$(R)ShutterMode_RBV")
+{
+field(DESC, "Shutter Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SHUTTER_MODE")
+field(ZRST, "Normal")
+field(ZRVL, "0")
+field(ONST, "Force Open")
+field(ONVL, "1")
+field(TWST, "Force Closed")
+field(TWVL, "2")
+field(SCAN, "I/O Intr")
+}
+
+
+
+########################
+# Video Mode PVs       #
+########################
+
+record (bo, "$(P)$(R)VideoMode")
+{
+field(DESC, "Enable Video Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_VID_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)VideoMode_RBV")
+{
+field(DESC, "Enable Video Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_VID_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+################################
+# Clear Before Acquire Mode
+################################
+
+
+record (bo, "$(P)$(R)CBAMode")
+{
+field(DESC, "Enable CBA Mode")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CBA_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CBAMode_RBV")
+{
+field(DESC, "Enable CBA Mode")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_CBA_MODE")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
+################################
+# Clear Before Acquire Mode
+################################
+
+
+record (bo, "$(P)$(R)CorHPREn")
+{
+field(DESC, "Enable Hot Pixel Removal")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_HPR_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(VAL, "0")
+}
+
+record (bi, "$(P)$(R)CorHPREn_RBV")
+{
+field(DESC, "Enable Hot Pixel Removal")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_COR_HPR_EN")
+field(ZNAM, "Disable")
+field(ONAM, "Enable")
+field(SCAN, "I/O Intr")
+}
+
