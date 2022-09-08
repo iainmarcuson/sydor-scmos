@@ -609,26 +609,6 @@ asynStatus syscmos::loadSettings(epicsInt32 value)
 
 
 
-/**Sets the detector back to default settings. This command takes
-about two seconds per module.**/
-asynStatus syscmos::setReset()
-{
-  asynStatus status = asynSuccess;
-  epicsInt32 i = 0;
-
-  setIntegerParam(SDReset, 1);
-  for (i = 0; i < this->nmodules; i++)
-  {
-    epicsSnprintf(outString_, sizeof(outString_), "-module %d", i);
-    status = sendCommand();
-
-    strcpy(outString_, "-reset");
-    status = sendCommand();
-  }
-  setIntegerParam(SDReset, 0);
-  callParamCallbacks();
-  return status;
-}
 
 /** Reads the values of all the modules parameters, sets them in the parameter library**/
 asynStatus syscmos::getSettings()
@@ -1896,40 +1876,25 @@ syscmos::syscmos(const char *portName, const char *CtrlPortName,
 
 #include <gc_create.c>
   createParam(SDSettingString, asynParamInt32, &SDSetting);
-  createParam(SDDelayTimeString, asynParamFloat64, &SDDelayTime);
-  createParam(SDThresholdString, asynParamFloat64, &SDThreshold);
-  createParam(SDEnergyString, asynParamFloat64, &SDEnergy);
-  createParam(SDUseFlatFieldString, asynParamInt32, &SDUseFlatField);
-  createParam(SDUseCountRateString, asynParamInt32, &SDUseCountRate);
-  createParam(SDBitDepthString, asynParamInt32, &SDBitDepth);
-  ///createParam(SDNumFramesString, asynParamInt32, &SDNumFrames);
-  //  createParam(SDInterframeTimeString, asynParamFloat64, &SDInterframeTime);
-  ///createParam(SDSensorPowerString,asynParamInt32, &SDSensorPower);
   createParam(SDDoTriggerString, asynParamInt32, &SDDoTrigger);
 
   //createParam(SDLinkStatusString, asynParamInt32, &SDLinkStatus);
   createParam(SDEPICSLinkStatusString, asynParamInt32, &SDEPICSLinkStatus);
 
-  ///createParam(SDDSNUString, asynParamInt32, &SDDSNUMode);
-  ///createParam(SDPRNUString, asynParamInt32, &SDPRNUMode);
-  
   createParam(SDRunStartString, asynParamInt32, &SDRunStart);
-  createParam(SDSelectRunString, asynParamInt32, &SDSelectRun);
-  createParam(SDLoadNumFramesString, asynParamInt32, &SDLoadNumFrames);
-  ///
+   ///
   printf("OutMux Before: %i\n", SDOutMux);
   createParam(SDOutMuxString, asynParamInt32, &SDOutMux);
   printf("OutMux After: %i\n", SDOutMux);
   fflush(stdout);
   
   // YF already in base createParam(SDTriggerString, asynParamInt32, &SDTrigger);
-  createParam(SDResetString, asynParamInt32, &SDReset);
   createParam(SDFirmwareVersionString, asynParamOctet, &SDFirmwareVersion);
 
   createParam(SDCommandOutString, asynParamOctet, &SDCommandOut);
   ///createParam(SDRunNameString, asynParamOctet, &SDRunName );
   ///createParam(SDSetNameString, asynParamOctet, &SDSetName );
-  createParam(SDSetDescriptionString, asynParamOctet, &SDSetDescription );
+  ///createParam(SDSetDescriptionString, asynParamOctet, &SDSetDescription );
 
   createParam(SDStartRunString, asynParamInt32, &SDStartRun);
 

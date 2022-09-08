@@ -4,6 +4,7 @@
 
 record(mbbo, "$(P)$(R)TriggerMode")
 {
+field(DTYP, "asynInt32")
 field(PINI, "YES")
 field(VAL, "0")
 field(ZRVL, "0")
@@ -19,6 +20,7 @@ field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 
 record(mbbi, "$(P)$(R)TriggerMode_RBV")
 {
+field(DTYP, "asynInt32")
 field(PINI, "YES")
 field(VAL, "0")
 field(ZRVL, "0")
@@ -58,36 +60,6 @@ field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_RUN_START")
 field (VAL, "1")
 }
 
-#----------------------------------
-# Select Run for Display
-#----------------------------------
-
-record(longout, "$(P)$(R)SelectRun")
-{
-field (DESC, "Select DataViewer Display")
-field (DTYP, "asynInt32")
-field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SELECT_RUN")
-field (VAL, "1")
-}
-
-#----------------------------------
-# Select number of frames to load
-#----------------------------------
-
-record(longout, "$(P)$(R)LoadNumFrames")
-{
-field (DESC, "Frames to Load")
-field (DTYP, "asynInt32")
-field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_LD_NUM_FRAMES")
-field (VAL, "1")
-}
-
-record(longin, "$(P)$(R)LoadNumFrames_RBV")
-{
-field (DESC, "Frames to Load")
-field (DTYP, "asynInt32")
-field (INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_LD_NUM_FRAMES")
-}
 
 #----------------------------------
 # Software trigger GO!
@@ -156,12 +128,6 @@ record(stringout, "$(P)$(R)QueryPlugin")
 #   field(VAL,  "Unknown")
 #}
 
-record(stringout, "$(P)$(R)SetDescription")
-{
-   field(DTYP, "asynOctetWrite")
-   field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SET_DESCRIPTION")
-   field(VAL,  "Unknown")
-}
 
 ## YF[0]
 

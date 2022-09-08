@@ -129,18 +129,6 @@ public:
 
 #include "gc_class_params.h"
   
-    int SDDelayTime; 
-    int SDThreshold;
-    int SDEnergy;
-    int SDUseFlatField;
-    int SDUseCountRate;
-    int SDUseBadChanIntrpl;
-    int SDBitDepth; 
-    int SDUseGates; 
-    int SDNumGates; 
-    int SDNumCycles; 
-  ///int SDNumFrames; 
-  ///int SDInterframeTime;
     int SDDoTrigger;
   ///int SDRunName;
   ///int SDSetName;
@@ -149,7 +137,6 @@ public:
   ///int SDSensorPower;
     int SDStartRun;
     //int SDTrigger;
-    int SDReset;
     int SDTau;
     int SDFirmwareVersion;
     int SDReadMode;
@@ -189,7 +176,6 @@ public:
     virtual asynStatus setFlip(epicsInt32 value);
     virtual asynStatus setTrigger(epicsInt32 value);
     virtual asynStatus loadSettings(epicsInt32 value);
-    virtual asynStatus setReset();
     virtual asynStatus getSettings();
     virtual epicsInt32  getStatus();
 #endif    

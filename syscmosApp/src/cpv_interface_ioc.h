@@ -78,7 +78,7 @@ public:
 		//{SDRunNameString, "RunName"},			 // NYI
 		//{SDStartRunString, "actionRun {setName:$1,description:$2,runName:$3}"
 		{SDStartRunString, "actionCapture"},
-	{SDSelectRunString, "@SPECIAL_SELECT_RUN"},
+	//{SDSelectRunString, "@SPECIAL_SELECT_RUN"},
 
 		//[0]
 
