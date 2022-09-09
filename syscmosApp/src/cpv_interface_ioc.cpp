@@ -45,6 +45,16 @@
 static char s_cmdName[kSizeOfCmdName];
 static char s_pvName[kSizeOfCmdName];
 
+enum SyCameraType
+{
+    SY_SCMOS,
+    SY_SPECTRO,
+    SY_XPAD
+};
+
+static const enum SyCameraType CAM_TYPE = SY_SCMOS;
+
+
 // ***************************************************************************
 // ********    Define class to send PV requests to DataViewer plugin *********
 // ***************************************************************************
@@ -94,107 +104,163 @@ bool CPV_Interface_IOC::_HandleSpecialCommands(const char *acmdName, int req_typ
 
     ///
     printf("Handling special command: %s\n", pcmd);
-    if (strcmp(pcmd, "SPECIAL_START_RUN") == 0)
+
+    // Switch over camera type
+    if (SY_SCMOS == CAM_TYPE)
     {
-        std::string runName, setName, setDescription;
+        if (strcmp(pcmd, "AcqROI") == 0)
+        {
+            int enable_roi, min_x, min_y, size_x, size_y;
+            if (req_type > 0)	// We are doing a set
+            {
+                m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
+                m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
+                m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
+                m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
+                m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
+                snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                         "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
+                         m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
+            }
+            else			// We are doing a get
+            {
+                snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                         "#%d:getpv<s>:Region?\r\n",
+                         m_sendCommandCounter++);
+            }
+        } // if ACQROI
+        else if (strcmp(pcmd, "COR_GEOCORRECT") == 0)
+        {
+            int enable_geo;
+            if (req_type > 0)	// Doing a set
+            {
+                m_syscmos->getIntegerParam(m_syscmos->SDGeoCorEn, &enable_geo);
+                snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                         "#%d:setpv<s>:setGeoCorrect:%i,\r\n", 
+                         m_sendCommandCounter++, enable_geo);
+            }
+            else			// Doing a query
+            {
+                snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                         "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
+                         m_sendCommandCounter++);
+                ///DEBUGGING
+                printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
+            }
+        } // if COR_GEOCORRECT
+        else if (strcmp(pcmd, "COR_ROTATE") == 0)
+        {
+            int enable_rotate;
+            double rotate_theta;
+            if (req_type > 0)	// Doing a set
+            {
+                m_syscmos->getIntegerParam(m_syscmos->SDCorRotEn, &enable_rotate);
+                m_syscmos->getDoubleParam(m_syscmos->SDCorRotTheta, &rotate_theta);
+                snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                         "#%d:setpv<s>:setRotation:%i,%f\r\n", 
+                         m_sendCommandCounter++, enable_rotate, rotate_theta);
+            }
+            else			// Doing a query
+            {
+                snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                         "#%d:getpv<d>:ds2c_Apply_Cor?ROTATE\r\n",
+                         m_sendCommandCounter++);
+                ///DEBUGGING
+                printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
+            }
+        } // If COR_ROTATE
         
-        m_syscmos->getStringParam(m_syscmos->SDSetName, /* byref */ setName);
-        m_syscmos->getStringParam( m_syscmos->SDSetDescription, /* byref */ setDescription);
-        m_syscmos->getStringParam(m_syscmos->SDRunName, /* byref */  runName);
+    } // Sydor SCMODS
+    else if (SY_XPAD == CAM_TYPE)
+    {
+        if (strcmp(pcmd, "SPECIAL_START_RUN") == 0)
+        {
+            std::string runName, setName, setDescription;
+        
+            m_syscmos->getStringParam(m_syscmos->SDSetName, /* byref */ setName);
+            m_syscmos->getStringParam( m_syscmos->SDSetDescription, /* byref */ setDescription);
+            m_syscmos->getStringParam(m_syscmos->SDRunName, /* byref */  runName);
         
 
-	/// DataViewer appears to show "description" as the magical phrase for the set description in the setings
-	/*
-        snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:actionStartRun:{setName\\:%s,setDescription\\:%s,runName\\:%s}\r\n", 
-            m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );
-	*/                
-	snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:actionStartRun:{setName\\:%s,description\\:%s,runName\\:%s}\r\n", 
-            m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );                
+            /// DataViewer appears to show "description" as the magical phrase for the set description in the setings
+            /*
+              snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+              "#%d:setpv<s>:actionStartRun:{setName\\:%s,setDescription\\:%s,runName\\:%s}\r\n", 
+              m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );
+            */                
+            snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                     "#%d:setpv<s>:actionStartRun:{setName\\:%s,description\\:%s,runName\\:%s}\r\n", 
+                     m_sendCommandCounter++, setName.c_str(), setDescription.c_str(), runName.c_str() );                
 
-        bret = true;    
-    }
-    else if (strcmp(pcmd, "SPECIAL_SELECT_RUN") == 0)
-      {
-	std::string runName, setName, setDescription;
-	int mode = 1;		// TODO Allow background frames
-	int b_avg = 0;		// TODO Presumable for averaging BG frames
-	int b_call_fetch_avg = 0; // TODO Find out what this does
-        int num_frames = 1;	  // Allow this to be changed 
-        m_syscmos->getStringParam(m_syscmos->SDSetName, /* byref */ setName);
-        m_syscmos->getStringParam( m_syscmos->SDSetDescription, /* byref */ setDescription);
-        m_syscmos->getStringParam(m_syscmos->SDRunName, /* byref */  runName);
-        m_syscmos->getIntegerParam(m_syscmos->SDLoadNumFrames, &num_frames);
+            bret = true;    
+        }
+        else if (strcmp(pcmd, "SPECIAL_SELECT_RUN") == 0)
+        {
+            std::string runName, setName, setDescription;
+            int mode = 1;		// TODO Allow background frames
+            int b_avg = 0;		// TODO Presumable for averaging BG frames
+            int b_call_fetch_avg = 0; // TODO Find out what this does
+            int num_frames = 1;	  // Allow this to be changed 
+            m_syscmos->getStringParam(m_syscmos->SDSetName, /* byref */ setName);
+            m_syscmos->getStringParam( m_syscmos->SDSetDescription, /* byref */ setDescription);
+            m_syscmos->getStringParam(m_syscmos->SDRunName, /* byref */  runName);
+            m_syscmos->getIntegerParam(m_syscmos->SDLoadNumFrames, &num_frames);
 
-        snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-            "#%d:setpv<s>:q2c_SelectRunItem:{mode\\:%i,setName\\:%s,setDescription\\:%s,runName\\:%s,NFrames\\:%i,bAverage\\:%i,bCallFetchAverage\\:%i}\r\n", 
-		 m_sendCommandCounter++, mode, setName.c_str(), setDescription.c_str(), runName.c_str(), num_frames, b_avg, b_call_fetch_avg);                
-	///
-	printf("Select Run command string: %s\n", m_privateBuffer);
-        bret = true;    
+            snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                     "#%d:setpv<s>:q2c_SelectRunItem:{mode\\:%i,setName\\:%s,setDescription\\:%s,runName\\:%s,NFrames\\:%i,bAverage\\:%i,bCallFetchAverage\\:%i}\r\n", 
+                     m_sendCommandCounter++, mode, setName.c_str(), setDescription.c_str(), runName.c_str(), num_frames, b_avg, b_call_fetch_avg);                
+            ///
+            printf("Select Run command string: %s\n", m_privateBuffer);
+            bret = true;    
+        }
+    } // SY_XPAD == CAM_TYPE
+    else if (SY_SPECTRO == CAM_TYPE) // Somewhat deprecated
+    {
+        if (strcmp(pcmd, "COR_GEOCORRECT") == 0)
+        {
+            int enable_geo;
+            if (req_type > 0)	// Doing a set
+            {
+                m_syscmos->getIntegerParam(m_syscmos->SDGeoCorEn, &enable_geo);
+                snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                         "#%d:setpv<s>:setGeoCorrect:%i,\r\n", 
+                         m_sendCommandCounter++, enable_geo);
+            }
+            else			// Doing a query
+            {
+                snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                         "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
+                         m_sendCommandCounter++);
+                ///DEBUGGING
+                printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
+            }
+        }
+        else if (strcmp(pcmd, "COR_ROTATE") == 0)
+        {
+            int enable_rotate;
+            double rotate_theta;
+            if (req_type > 0)	// Doing a set
+            {
+                m_syscmos->getIntegerParam(m_syscmos->SDCorRotEn, &enable_rotate);
+                m_syscmos->getDoubleParam(m_syscmos->SDCorRotTheta, &rotate_theta);
+                snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
+                         "#%d:setpv<s>:setRotation:%i,%f\r\n", 
+                         m_sendCommandCounter++, enable_rotate, rotate_theta);
+            }
+            else			// Doing a query
+            {
+                snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
+                         "#%d:getpv<d>:ds2c_Apply_Cor?ROTATE\r\n",
+                         m_sendCommandCounter++);
+                ///DEBUGGING
+                printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
+            }
+        }
+    } // SY_SPECTRO == CAM_TYPE
+    else                        // Not a valid camera type
+    {
+        printf("Error: Invalid camera type.\n");
     }
-    else if (strcmp(pcmd, "COR_GEOCORRECT") == 0)
-      {
-	int enable_geo;
-	if (req_type > 0)	// Doing a set
-	  {
-	    m_syscmos->getIntegerParam(m_syscmos->SDGeoCorEn, &enable_geo);
-	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-		     "#%d:setpv<s>:setGeoCorrect:%i,\r\n", 
-		     m_sendCommandCounter++, enable_geo);
-	  }
-	else			// Doing a query
-	  {
-	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-		     "#%d:getpv<s>:ds2c_Apply_Cor?GEOCORRECTION\r\n",
-		     m_sendCommandCounter++);
-	    ///DEBUGGING
-	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
-	  }
-      }
-    else if (strcmp(pcmd, "COR_ROTATE") == 0)
-      {
-	int enable_rotate;
-	double rotate_theta;
-	if (req_type > 0)	// Doing a set
-	  {
-	    m_syscmos->getIntegerParam(m_syscmos->SDCorRotEn, &enable_rotate);
-	    m_syscmos->getDoubleParam(m_syscmos->SDCorRotTheta, &rotate_theta);
-	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-		     "#%d:setpv<s>:setRotation:%i,%f\r\n", 
-		     m_sendCommandCounter++, enable_rotate, rotate_theta);
-	  }
-	else			// Doing a query
-	  {
-	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-		     "#%d:getpv<d>:ds2c_Apply_Cor?ROTATE\r\n",
-		     m_sendCommandCounter++);
-	    ///DEBUGGING
-	    printf("Sending command string: \"%s\"\r\n", m_privateBuffer);
-	  }
-      }
-    else if (strcmp(pcmd, "AcqROI") == 0)
-      {
-	int enable_roi, min_x, min_y, size_x, size_y;
-	if (req_type > 0)	// We are doing a set
-	  {
-	    m_syscmos->getIntegerParam(m_syscmos->SDEnableROI, &enable_roi);
-	    m_syscmos->getIntegerParam(m_syscmos->ADMinX, &min_x);
-	    m_syscmos->getIntegerParam(m_syscmos->ADMinY, &min_y);
-	    m_syscmos->getIntegerParam(m_syscmos->ADSizeX, &size_x);
-	    m_syscmos->getIntegerParam(m_syscmos->ADSizeY, &size_y);
-	    snprintf(m_privateBuffer,  kSizeOfPrivateBuffer-1,   
-		     "#%d:setpv<s>:Region:%i,%i,%i,%i,%i\r\n", 
-		     m_sendCommandCounter++, enable_roi, min_x, min_y, size_x, size_y);
-	  }
-	else			// We are doing a get
-	  {
-	    snprintf(m_privateBuffer, kSizeOfPrivateBuffer-1,
-		     "#%d:getpv<s>:Region?\r\n",
-		     m_sendCommandCounter++);
-	  }
-      }
     
     ///
     fflush(stdout);
@@ -513,7 +579,7 @@ asynStatus CPV_Interface_IOC::writeWithReply(char *pstr)
         status = m_pasynOctetSyncIO->write(m_pasynUserMeter, pstr, kWRITESIZE,
                                            1 /*M1K_TIMEOUT*/, &nwrote);
 
-        ///printf(" F:%s >%s Stat:%d. Wrote:%d \n", __func__, pstr, status, (int)nwrote); // DEBUG
+        printf(" F:%s >%s Stat:%d. Wrote:%d \n", __func__, pstr, status, (int)nwrote); // DEBUG
         if (bBreak)
             break;
         else
