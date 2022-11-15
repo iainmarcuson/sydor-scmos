@@ -52,7 +52,7 @@ enum SyCameraType
     SY_XPAD
 };
 
-static const enum SyCameraType CAM_TYPE = SY_SCMOS;
+static const enum SyCameraType CAM_TYPE = SY_XPAD;
 
 
 // ***************************************************************************

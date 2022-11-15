@@ -238,3 +238,44 @@ field(ONAM, "Enable")
 field(VAL, "0")
 field(SCAN, "I/O Intr")
 }
+
+#----------------------------------
+# Query of per-cap parameters
+#----------------------------------
+
+record(fanout, "$(P)$(R)CapGain_QAll")
+{
+field(LNK0, "$(P)$(R)Cap1Gain_Q")
+field(LNK1, "$(P)$(R)Cap2Gain_Q")
+field(LNK2, "$(P)$(R)Cap3Gain_Q")
+field(LNK3, "$(P)$(R)Cap4Gain_Q")
+field(LNK4, "$(P)$(R)Cap5Gain_Q")
+field(LNK5, "$(P)$(R)Cap6Gain_Q")
+field(LNK6, "$(P)$(R)Cap7Gain_Q")
+field(LNK7, "$(P)$(R)Cap8Gain_Q")
+}
+
+record(fanout, "$(P)$(R)CapInteg_QAll")
+{
+field(LNK0, "$(P)$(R)Cap1Integ_Q")
+field(LNK1, "$(P)$(R)Cap2Integ_Q")
+field(LNK2, "$(P)$(R)Cap3Integ_Q")
+field(LNK3, "$(P)$(R)Cap4Integ_Q")
+field(LNK4, "$(P)$(R)Cap5Integ_Q")
+field(LNK5, "$(P)$(R)Cap6Integ_Q")
+field(LNK6, "$(P)$(R)Cap7Integ_Q")
+field(LNK7, "$(P)$(R)Cap8Integ_Q")
+}
+
+record(fanout, "$(P)$(R)CapInter_QAll")
+{
+field(LNK0, "$(P)$(R)Cap1Inter_Q")
+field(LNK1, "$(P)$(R)Cap2Inter_Q")
+field(LNK2, "$(P)$(R)Cap3Inter_Q")
+field(LNK3, "$(P)$(R)Cap4Inter_Q")
+field(LNK4, "$(P)$(R)Cap5Inter_Q")
+field(LNK5, "$(P)$(R)Cap6Inter_Q")
+field(LNK6, "$(P)$(R)Cap7Inter_Q")
+field(LNK7, "$(P)$(R)Cap8Inter_Q")
+}
+

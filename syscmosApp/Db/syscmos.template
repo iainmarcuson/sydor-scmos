@@ -110,7 +110,7 @@ field(PINI, "NO")
 # Per-camera file
 #----------------------------------
 
-include "scmos.template"
+include "mmpad.template"
 
 #----------------------------------
 # PV Companions for Queries
