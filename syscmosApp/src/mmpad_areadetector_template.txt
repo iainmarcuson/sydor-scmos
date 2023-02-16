@@ -78,3 +78,5 @@ $(P)$(R)Cap7Gain, SD_CAP_GAIN7, i32, SDCapGain7, SDCapGain7String, 0, 0, "C7Gain
 $(P)$(R)Cap8Gain, SD_CAP_GAIN8, i32, SDCapGain8, SDCapGain8String, 0, 0, "C8Gain"
 $(P)$(R)CapGain, SD_CAP_GAIN, i32, SDCapGain, SDCapGainString, 0, 0, "Gain"
 $(P)$(R)FrameNumber, SD_FRAME_NUM, i32, SDFrameNUm, SDFrameNumString, 0, 0, "FrameNumber"
+$(P)$(R)ShutterStartMode, SD_SHUTTER_START_MODE, i32, SDShutterStartMode, SDShutterStartModeString, 0, 1, "Shutter_Start_Mode"
+$(P)$(R)ShutterStopMode, SD_SHUTTER_STOP_MODE, i32, SDShutterStopMode, SDShutterStopModeString, 0, 1, "Shutter_Stop_Mode"

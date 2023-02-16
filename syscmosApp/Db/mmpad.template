@@ -146,7 +146,80 @@ field(ONST, "ON")
 field(TWVL, "2")
 field(TWST, "Shunt")
 field(DTYP, "asynInt32")
+field(SCAN, "I/O Intr")
 field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
+}
+
+#----------------------------------
+# Shutter Start and Stop Modes
+#----------------------------------
+
+record(mbbo, "$(P)$(R)ShutterStartMode")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Disabled")
+field(ONVL, "1")
+field(ONST, "ShutterOpenBit")
+field(TWVL, "2")
+field(TWST, "Exp Mode N cmd")
+field(THVL, "3")
+field(THST, "Trigger BNC")
+field(FRVL, "4")
+field(FRST, "Shutter Close on ris edge BNC")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SHUTTER_START_MODE")
+}
+
+record(mbbi, "$(P)$(R)ShutterStartMode_RBV")
+{
+field(ZRVL, "0")
+field(ZRST, "Disabled")
+field(ONVL, "1")
+field(ONST, "ShutterOpenBit")
+field(TWVL, "2")
+field(TWST, "Exp Mode N cmd")
+field(THVL, "3")
+field(THST, "Trigger BNC")
+field(FRVL, "4")
+field(FRST, "Shutter Close on ris edge BNC")
+field(DTYP, "asynInt32")
+field(SCAN, "I/O Intr")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SHUTTER_START_MODE")
+}
+
+record(mbbo, "$(P)$(R)ShutterStopMode")
+{
+field(ZRVL, "0")
+field(ZRST, "Stop after delay2")
+field(ONVL, "1")
+field(ONST, "ShutterOpenBit")
+field(TWVL, "2")
+field(TWST, "Exp Mode N cmd")
+field(THVL, "3")
+field(THST, "Shutter Close on ris edge BNC")
+field(FRVL, "4")
+field(FRST, "Shutter Close on fal edge BNC")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SHUTTER_STOP_MODE")
+}
+
+record(mbbi, "$(P)$(R)ShutterStopMode_RBV")
+{
+field(ZRVL, "0")
+field(ZRST, "Stop after delay2")
+field(ONVL, "1")
+field(ONST, "ShutterOpenBit")
+field(TWVL, "2")
+field(TWST, "Exp Mode N cmd")
+field(THVL, "3")
+field(THST, "Shutter Close on ris edge BNC")
+field(FRVL, "4")
+field(FRST, "Shutter Close on fal edge BNC")
+field(SCAN, "I/O Intr")
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_SHUTTER_STOP_MODE")
 }
 
 
