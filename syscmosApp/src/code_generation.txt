@@ -16,6 +16,11 @@ Code Generation
 
 1. `python3 gendb.py areadetector_template.txt`
 
+KeckPAD Addtional Step
+----------------------
+
+1. `python3 gen_keck_gains.py`
+
 Database Install
 -----------------
 

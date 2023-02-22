@@ -14,6 +14,9 @@ include $(TOP)/configure/CONFIG
 DB += syscmos.template
 DB += gc_query.db
 DB += gc_params.db
+DB += gc_keck_gains.db
+DB += mmpad.template
+
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_template = <templatename>

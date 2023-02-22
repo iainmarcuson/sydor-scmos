@@ -10,6 +10,9 @@ field(ZRVL, "0")
 field(ZRST, "Software")
 field(ONVL, "1")
 field(ONST, "Hardware")
+field(TWVL, "2")
+field(TWST, "Ring Clock")
+field(DTYP, "asynInt32")
 field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
 }
 
@@ -19,7 +22,79 @@ field(ZRVL, "0")
 field(ZRST, "Software")
 field(ONVL, "1")
 field(ONST, "Hardware")
+field(TWVL, "2")
+field(TWST, "Ring Clock")
+field(DTYP, "asynInt32")
+field(SCAN, "I/O Intr")
 field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_MODE")
+}
+
+#----------------------------------
+# Read Mode
+#----------------------------------
+
+record(mbbo, "$(P)$(R)ReadMode")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "Normal")
+field(ONVL, "1")
+field(ONST, "Wait for Readout Delay")
+field(TWVL, "2")
+field(TWST, "Wait for Read Trig")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READ_MODE")
+}
+
+record(mbbi, "$(P)$(R)ReadMode_RBV")
+{
+field(ZRVL, "0")
+field(ZRST, "Normal")
+field(ONVL, "1")
+field(ONST, "Wait for Readout Delay")
+field(TWVL, "2")
+field(TWST, "Wait for Read Trig")
+field(DTYP, "asynInt32")
+field(SCAN, "I/O Intr")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_READ_MODE")
+}
+
+#----------------------------------
+# Exposure Mode
+#----------------------------------
+
+record(mbbo, "$(P)$(R)ExpMode")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "No Trigger")
+field(ONVL, "1")
+field(ONST, "Trig1")
+field(TWVL, "2")
+field(TWST, "TrigN")
+field(THVL, "3")
+field(THST, "TrigR")
+field(DTYP, "asynInt32")
+field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_EXPOSURE_MODE")
+}
+
+record(mbbi, "$(P)$(R)ExpMode_RBV")
+{
+field(PINI, "YES")
+field(VAL, "0")
+field(ZRVL, "0")
+field(ZRST, "No Trigger")
+field(ONVL, "1")
+field(ONST, "Trig1")
+field(TWVL, "2")
+field(TWST, "TrigN")
+field(THVL, "3")
+field(THST, "TrigR")
+field(DTYP, "asynInt32")
+field(SCAN, "I/O Intr")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_EXPOSURE_MODE")
 }
 
 #----------------------------------
@@ -148,6 +223,30 @@ field(DTYP, "asynInt32")
 field(SCAN, "I/O Intr")
 field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT))SD_ROUTE_BIAS")
 }
+
+#----------------------------------
+# Shutter Control
+#----------------------------------
+
+record (bo, "$(P)$(R)XPShutter")
+{
+    field (DESC, "Shutter Control")
+    field (DTYP, "asynInt32")
+    field (OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SHUTTER_CONTROL")
+    field (ZNAM, "Close")
+    field (ONAM, "Open")
+    field (VAL,  "0")
+}
+
+record(bi, "$(P)$(R)XPShutter_RBV")
+{
+field(DTYP, "asynInt32")
+field(INP, "@asyn($(PORT),$(ADDR),$(TIMEOUT)) SD_SHUTTER_CONTROL")
+field (ZNAM, "Close")
+field (ONAM, "Open")
+field(SCAN, "I/O Intr")
+}
+
 
 #----------------------------------
 # Shutter Start and Stop Modes
@@ -351,3 +450,4 @@ field(LNK6, "$(P)$(R)Cap7Inter_Q")
 field(LNK7, "$(P)$(R)Cap8Inter_Q")
 }
 
+include "gc_keck_gains.db"
