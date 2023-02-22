@@ -139,7 +139,7 @@ public:
     //int SDTrigger;
     int SDTau;
     int SDFirmwareVersion;
-    int SDReadMode;
+    ///int SDReadMode;
     int SDCommandOut;
   ///int SDLinkStatus;
   int SDEPICSLinkStatus;

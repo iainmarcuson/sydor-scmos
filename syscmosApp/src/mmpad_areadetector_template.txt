@@ -5,7 +5,8 @@
 $(P)$(R)AcquireTime, ACQ_TIME, d, ADAcquireTime, ADAcquireTimeString, 1, 1, "IntegTime"
 $(P)$(R)TriggerMode, TRIGGER_MODE, i32, ADTriggerMode, ADTriggerModeString, 1, 1, "Trigger"
 $(P)$(R)NumImages, NIMAGES, i32, ADNumImages, ADNumImagesString, 1, 1, "NTriggers"
-$(P)$(R)ShutterMode, SHUTTER_MODE, i32, ADShutterMode, ADShutterModeString, 1, 1, "Shutter"
+# The shutter PV below is rather different than what we want, and has been replaced with $(P)$(R)XPShutter.
+#$(P)$(R)ShutterMode, SHUTTER_MODE, i32, ADShutterMode, ADShutterModeString, 1, 1, "Shutter"
 $(P)$(R)InterframeTime, SD_INTERFRAME_TIME, d, SDInterframeTime, SDInterframeTimeString, 0, 0, "InterTime"
 $(P)$(R)NumFrames, SD_NUM_FRAMES, i32, SDNumFrames, SDNumFramesString, 0, 0, "FramesPerTrigger"
 $(P)$(R)SensorPower, SD_SENSOR_POWER, i32, SDSensorPower, SDSensorPowerString, 0, 1, "SensorPower"
@@ -82,3 +83,8 @@ $(P)$(R)ShutterStartMode, SD_SHUTTER_START_MODE, i32, SDShutterStartMode, SDShut
 $(P)$(R)ShutterStopMode, SD_SHUTTER_STOP_MODE, i32, SDShutterStopMode, SDShutterStopModeString, 0, 1, "Shutter_Stop_Mode"
 $(P)$(R)ShutterDelay1, SD_SHUTTER_DELAY1, i32, SDShutterDelay1, SDShutterDelay1String, 0, 0, "Shutter_Delay_1"
 $(P)$(R)ShutterDelay2, SD_SHUTTER_DELAY2, i32, SDShutterDelay2, SDShutterDelay2String, 0, 0, "Shutter_Delay_2"
+$(P)$(R)ReadDelay, SD_READ_DELAY, d, SDReadDelay, SDReadDelayString, 0, 0, "ReadDelay"
+$(P)$(R)TriggerDelay, SD_TRIGGER_DELAY, d, SDTriggerDelay, SDTriggerDelayString, 0, 0, "TriggerDelay"
+$(P)$(R)ExpMode, SD_EXPOSURE_MODE, i32, SDExposureMode, SDExposureModeString, 0, 1, "ExpMode"
+$(P)$(R)ReadMode, SD_READ_MODE, i32, SDReadMode, SDReadModeString, 0, 1, "ReadMode"
+$(P)$(R)XPShutter, SD_SHUTTER_CONTROL, i32, SDShutterMode, SDShutterModeString, 0, 1, "Shutter"
