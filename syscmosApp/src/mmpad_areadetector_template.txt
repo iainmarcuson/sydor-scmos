@@ -49,7 +49,7 @@ $(P)$(R)CBAMode, SD_CBA_MODE, i32, SDCBAMode, SDCBAModeString, 0, 1, "ClearBefor
 $(P)$(R)CorHPREn, SD_COR_HPR_EN, i32, SDCorHPREn, SDCorHPREnString, 0, 1, "@COR_HPR"
 $(P)$(R)CorHPRRatio, SD_COR_HPR_RATIO, d, SDCorHPRRatio, SDCorHPRRatioString, 0, 0, "@COR_HPR"
 $(P)$(R)ImageMode, IMAGE_MODE, i32, ADImageMode, ADImageModeString, 1, 1, "AcquireMode"
-$(P)$(R)AcqAbort, SD_ACQ_ABORT, i32, SDAcqAbort, SDAcqAbortString, 0, 0, "Abort"
+$(P)$(R)AcqAbort, SD_ACQ_ABORT, i32, SDAcqAbort, SDAcqAbortString, 0, 0, "actionStopRun"
 $(P)$(R)SensorBias, SD_SENS_BIAS, i32, SDSensBias, SDSensBiasString, 0, 1, "SensorBias"
 $(P)$(R)BiasRoute, SD_ROUTE_BIAS, i32, SDRouteBias, SDRouteBiasString, 0, 1, "BiasRoute"
 $(P)$(R)CapSelect, SD_CAP_SEL, i32, SDCalSel, SDCapSelString, 0, 0, "CinSel"
